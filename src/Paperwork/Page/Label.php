@@ -9,7 +9,7 @@
 namespace App\Paperwork\Page;
 
 
-final class LabelSheet
+final class Label
 {
     const WIDTH = 8.5;
     const HEIGHT = 11;

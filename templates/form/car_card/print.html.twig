@@ -57,16 +57,6 @@
             -moz-box-sizing: border-box;    /* Firefox, other Gecko */
             box-sizing: border-box;         /* Opera/IE 8+ */
         }
-        .hline {
-            position: absolute;
-            border-bottom: 1px solid black;
-            height: 1px;
-        }
-        .vline {
-            position: absolute;
-            border-left: 1px solid black;
-            width: 1px;
-        }
     </style>
     <style>
         @font-face {
@@ -77,30 +67,12 @@
             font-weight: normal;
             font-style: normal;
         }
-        @font-face {
-            font-family: 'BellGothicStdBlack';
-            src: url('{% if not isWebRequest %}http://krolla.local{% endif %}/font/bellgothicstd/BellGothicStd-Black.woff') format('woff'),
-                 url('{% if not isWebRequest %}http://krolla.local{% endif %}/font/bellgothicstd/BellGothicStd-Black.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
     </style>
     <style>
-        .form_header {
-            position: absolute;
-            font-size: 13pt;
-            line-height: 0.5in;
-            text-align: center;
-            font-family: "BellGothicStdBlack";
-        }
-        .field_header {
-            position: absolute;
-            font-size: 5pt;
-            padding-top: 4px;
-            padding-left: 4px;
-            font-family: "BellGothicStdBlack";
-        }
         .field_data {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             position: absolute;
             font-size: 8pt;
             padding: 4px 6px;
@@ -109,17 +81,30 @@
     </style>
 </head>
 <body>
-{% for page in 0..(forms|length / (constant('App\\Paperwork\\Page\\Letter::ROWS') * constant('App\\Paperwork\\Page\\Letter::COLUMNS')))|round(0, 'floor') %}
+{% for page in 0..(forms|length / (constant('App\\Paperwork\\Page\\Label::ROWS') * constant('App\\Paperwork\\Page\\Label::COLUMNS')))|round(0, 'floor') %}
 <div style="position:relative; width: 8.5in; height: 11in; padding: .25in .5in .25in .5in;">
     <div style="position: relative; width: 100%; height: 100%">
         {% set left = 0 %}
-        {% for column in 0..constant('App\\Paperwork\\Page\\Letter::COLUMNS')-1 %}
+        {% for column in 0..constant('App\\Paperwork\\Page\\Label::COLUMNS')-1 %}
             {% set top = 0 %}
 
-            {% for row in 0..constant('App\\Paperwork\\Page\\Letter::ROWS')-1 %}
-                {% if forms[page * (constant('App\\Paperwork\\Page\\Letter::ROWS') * constant('App\\Paperwork\\Page\\Letter::COLUMNS')) + (row + column * constant('App\\Paperwork\\Page\\Letter::COLUMNS'))] is defined %}
-                    <div style="top: {{ column / constant('App\\Paperwork\\Page\\Letter::COLUMNS') * 100 }}%; left: {{ row / constant('App\\Paperwork\\Page\\Letter::ROWS') * 100 }}%; height: {{ 1 / constant('App\\Paperwork\\Page\\Letter::ROWS') * 100 }}%; width: {{ 1 / constant('App\\Paperwork\\Page\\Letter::COLUMNS') * 100 }}%; position: absolute;">
-                        {% include 'pdf/_carcard.html.twig' with { 'form': forms[page * (constant('App\\Paperwork\\Page\\Letter::ROWS') * constant('App\\Paperwork\\Page\\Letter::COLUMNS')) + (row + column * constant('App\\Paperwork\\Page\\Letter::COLUMNS'))] }%}
+            {% for row in 0..constant('App\\Paperwork\\Page\\Label::ROWS')-1 %}
+                {% if forms[page * (constant('App\\Paperwork\\Page\\Label::ROWS') * constant('App\\Paperwork\\Page\\Label::COLUMNS'))
+                    + (row + column * constant('App\\Paperwork\\Page\\Label::ROWS'))] is defined %}
+                    <div style="
+                            top: {{ row / constant('App\\Paperwork\\Page\\Label::ROWS') * 100 }}%;
+                            left: {{ column * (constant('App\\Paperwork\\Form\\CarCardForm::WIDTH') + constant('App\\Paperwork\\Page\\Label::COLUMN_BUFFER'))
+                    / (constant('App\\Paperwork\\Page\\Label::WIDTH') - 2 * constant('App\\Paperwork\\Page\\Label::MARGIN_SIDE'))
+                    * 100 }}%;
+                            height: {{ 1 / constant('App\\Paperwork\\Page\\Label::ROWS') * 100 }}%;
+                            width: {{ constant('App\\Paperwork\\Form\\CarCardForm::WIDTH') / (constant('App\\Paperwork\\Page\\Label::WIDTH') - 2 * constant('App\\Paperwork\\Page\\Label::MARGIN_SIDE')) * 100 }}%;
+                            position: absolute;
+                            ">
+                        {% include 'form/car_card/_item.html.twig' with {
+                            'form': forms[
+                                page * (constant('App\\Paperwork\\Page\\Label::ROWS') * constant('App\\Paperwork\\Page\\Label::COLUMNS'))
+                                + (row + column * constant('App\\Paperwork\\Page\\Label::ROWS'))
+                            ] }%}
                     </div>
                 {% endif %}
 

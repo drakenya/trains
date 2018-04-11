@@ -8,33 +8,28 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Waybill;
+use App\Entity\CarCard;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 
-class WaybillFixtures extends Fixture
+class CarCardFixtures extends Fixture
 {
-    private const FIXTURES_TO_GENERATE = 13;
+    private const FIXTURES_TO_GENERATE = 43;
 
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create();
 
         for ($i = 0; $i < static::FIXTURES_TO_GENERATE; $i++) {
-            $waybill = (new Waybill())
-                ->setFromAddress(sprintf('%s, %s', $faker->city, $faker->stateAbbr))
-                ->setToAddress(sprintf('%s, %s', $faker->city, $faker->stateAbbr))
-                ->setShipper($faker->company)
-                ->setConsignee($faker->company)
-                ->setAarClass($faker->randomElement(['XM', 'XA', 'HT']))
-                ->setLengthCapacity($faker->randomElement(["40'", "50'", "70t", "100t"]))
-                ->setRouteVia($faker->regexify('([A-Z]{2,3}-){0,2}[A-Z]{2,3}'))
-                ->setSpotLocation(sprintf('%s.%s', $faker->randomNumber(3), $faker->randomNumber(3)))
-                ->setLadingQuantity($faker->randomElement(['C/L']))
-                ->setLadingDescription($faker->words(2, true))
+            $carCard = (new CarCard())
+                ->setCarInitial($faker->regexify('[A-Z]{1,2}&?[A-Z]'))
+                ->setCarNumber($faker->numberBetween(1000, 999999))
+                ->setAarType($faker->randomElement(['XM', 'XA', 'HT']))
+                ->setLengthCapacity($faker->optional(0.80)->randomElement(["40'", "50'", "70t", "100t"]))
+                ->setDescription($faker->optional(0.25)->words(3, true))
             ;
-            $manager->persist($waybill);
+            $manager->persist($carCard);
         }
 
         $manager->flush();

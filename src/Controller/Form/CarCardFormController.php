@@ -2,43 +2,48 @@
 
 namespace App\Controller\Form;
 
-use App\Entity\Waybill;
-use App\Paperwork\Form\WaybillForm;
-use App\Repository\WaybillRepository;
+use App\Entity\CarCard;
+use App\Paperwork\Form\CarCardForm;
+use App\Repository\CarCardRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
- * @Route("/form/waybill")
+ * @Route("/form/car-card")
  */
-class WaybillFormController extends Controller
+class CarCardFormController extends Controller
 {
-    private $waybillRepository;
+    private $carCardRepository;
 
-    public function __construct(WaybillRepository $waybillRepository)
+    public function __construct(CarCardRepository $carCardRepository)
     {
-        $this->waybillRepository = $waybillRepository;
+        $this->carCardRepository = $carCardRepository;
     }
 
     /**
-     * @Route("/", name="waybill_form_print")
+     * @Route("/", name="car_card_form_print")
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
-    public function waybill(Request $request)
+    public function carCard(Request $request)
     {
-        $waybills = $this->waybillRepository->findAll();
+        $carCards = $this->carCardRepository->findAll();
 
-        $waybillForms = array_map(function (Waybill $waybill) {
-            return new WaybillForm($waybill);
-        }, $waybills);
+        $carCardForms = array_map(function (CarCard $carCard) {
+            return new CarCardForm($carCard);
+        }, $carCards);
 
         if ($this->container->has('profiler'))
         {
             $this->container->get('profiler')->disable();
         }
 
-        return $this->render('pdf/template.html.twig', [
-            'forms' => $waybillForms,
+        return $this->render('form/car_card/print.html.twig', [
+            'forms' => $carCardForms,
             'isWebRequest' => (bool) !$request->get('preview'),
         ]);
     }
