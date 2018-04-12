@@ -6,6 +6,7 @@ use App\Entity\Waybill;
 use App\Paperwork\Form\WaybillForm;
 use App\Repository\WaybillRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -23,10 +24,18 @@ class WaybillFormController extends Controller
 
     /**
      * @Route("/", name="waybill_form_print")
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
-    public function waybill(Request $request)
+    public function waybill(Request $request): Response
     {
-        $waybills = $this->waybillRepository->findAll();
+        if ($request->get('waybills')) {
+            $waybills = $this->waybillRepository->findBy(['id' => explode(',', $request->get('waybills'))]);
+        } else {
+            $waybills = $this->waybillRepository->findAll();
+        }
 
         $waybillForms = array_map(function (Waybill $waybill) {
             return new WaybillForm($waybill);

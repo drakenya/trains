@@ -29,9 +29,13 @@ class CarCardFormController extends Controller
      *
      * @return Response
      */
-    public function carCard(Request $request)
+    public function carCard(Request $request): Response
     {
-        $carCards = $this->carCardRepository->findAll();
+        if ($request->get('cards')) {
+            $carCards = $this->carCardRepository->findBy(['id' => explode(',', $request->get('cards'))]);
+        } else {
+            $carCards = $this->carCardRepository->findAll();
+        }
 
         $carCardForms = array_map(function (CarCard $carCard) {
             return new CarCardForm($carCard);
