@@ -59,13 +59,13 @@ class WaybillForm extends BaseForm
         $routeVia = Header::createAtFieldsBottom($consigneeData, static::WIDTH/2, static::BASE_FIELD_HEIGHT/static::BASE_FIELD_HEIGHT_SLICES);
         $routeViaData = Data::createAtFieldsBottom($routeVia, static::WIDTH/2, static::BASE_FIELD_HEIGHT*(static::BASE_FIELD_HEIGHT_SLICES-1)/static::BASE_FIELD_HEIGHT_SLICES);
 
-        $spotting = Header::createAtFieldsBottom($lenCapy, static::WIDTH/2, static::BASE_FIELD_HEIGHT/3);
-        $spottingData = Data::createAtFieldsRight($spotting, static::WIDTH/2, static::BASE_FIELD_HEIGHT/3);
+        $spotting = Header::createAtFieldsBottom($lenCapy, static::WIDTH/2, static::BASE_FIELD_HEIGHT*(2/6));
+        $spottingData = Data::createAtFieldsRight($spotting, static::WIDTH/2, static::BASE_FIELD_HEIGHT*(2/6));
 
-        $pkgs = Header::createAtFieldsBottom($spotting, static::WIDTH/4, static::BASE_FIELD_HEIGHT/3);
-        $pkgsData = Data::createAtFieldsBottom($pkgs, static::WIDTH/4, static::BASE_FIELD_HEIGHT/3);
-        $description = Header::createAtFieldsRight($pkgs, static::WIDTH*3/4, static::BASE_FIELD_HEIGHT/3);
-        $descriptionData = Data::createAtFieldsRight($pkgsData, static::WIDTH*3/4, static::BASE_FIELD_HEIGHT/3);
+        $pkgs = Header::createAtFieldsBottom($spotting, static::WIDTH/4, static::BASE_FIELD_HEIGHT*(1/6));
+        $pkgsData = Data::createAtFieldsBottom($pkgs, static::WIDTH/4, static::BASE_FIELD_HEIGHT*(3/6));
+        $description = Header::createAtFieldsRight($pkgs, static::WIDTH*3/4, static::BASE_FIELD_HEIGHT*(1/6));
+        $descriptionData = Data::createAtFieldsRight($pkgsData, static::WIDTH*3/4, static::BASE_FIELD_HEIGHT*(3/6));
 
         $this->headerFields = [
             new DataField('FREIGHT WAYBILL', $formHeader),
@@ -119,6 +119,8 @@ class WaybillForm extends BaseForm
             HorizontalLine::createAtFieldBottom($toData),
             HorizontalLine::createAtFieldBottom($shipperData),
             HorizontalLine::createAtFieldBottom($consigneeData),
+            HorizontalLine::createAtFieldBottom($aarClass),
+            HorizontalLine::createAtFieldBottom($aarClassData),
             HorizontalLine::createAtFieldBottom($lenCapy),
             HorizontalLine::createAtFieldBottom($lenCapyData),
             HorizontalLine::createAtFieldBottom($routeViaData),
