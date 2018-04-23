@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Waybill{% endblock %}
+
+{% block body %}
+    <h1>Create new Waybill</h1>
+
+    {{ include('waybill/_form.html.twig') }}
+
+    <a href="{{ path('waybill_index') }}">back to list</a>
+{% endblock %}

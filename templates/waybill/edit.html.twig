@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Waybill{% endblock %}
+
+{% block body %}
+    <h1>Edit Waybill</h1>
+
+    {{ include('waybill/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('waybill_index') }}">back to list</a>
+
+    {{ include('waybill/_delete_form.html.twig') }}
+{% endblock %}

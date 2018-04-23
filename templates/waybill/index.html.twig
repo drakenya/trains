@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Waybill index{% endblock %}
+
+{% block body %}
+    <h1>Waybill index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>FromAddress</th>
+                <th>ToAddress</th>
+                <th>Shipper</th>
+                <th>Consignee</th>
+                <th>AarClass</th>
+                <th>LengthCapacity</th>
+                <th>RouteVia</th>
+                <th>SpotLocation</th>
+                <th>LadingQuantity</th>
+                <th>LadingDescription</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for waybill in waybills %}
+            <tr>
+                <td>{{ waybill.id }}</td>
+                <td>{{ waybill.fromAddress }}</td>
+                <td>{{ waybill.toAddress }}</td>
+                <td>{{ waybill.shipper }}</td>
+                <td>{{ waybill.consignee }}</td>
+                <td>{{ waybill.aarClass }}</td>
+                <td>{{ waybill.lengthCapacity }}</td>
+                <td>{{ waybill.routeVia }}</td>
+                <td>{{ waybill.spotLocation }}</td>
+                <td>{{ waybill.ladingQuantity }}</td>
+                <td>{{ waybill.ladingDescription }}</td>
+                <td>
+                    <a href="{{ path('waybill_show', {'id': waybill.id}) }}">show</a>
+                    <a href="{{ path('waybill_edit', {'id': waybill.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('waybill_new') }}">Create new</a>
+{% endblock %}

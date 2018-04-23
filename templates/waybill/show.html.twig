@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Waybill{% endblock %}
+
+{% block body %}
+    <h1>Waybill</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ waybill.id }}</td>
+            </tr>
+            <tr>
+                <th>FromAddress</th>
+                <td>{{ waybill.fromAddress }}</td>
+            </tr>
+            <tr>
+                <th>ToAddress</th>
+                <td>{{ waybill.toAddress }}</td>
+            </tr>
+            <tr>
+                <th>Shipper</th>
+                <td>{{ waybill.shipper }}</td>
+            </tr>
+            <tr>
+                <th>Consignee</th>
+                <td>{{ waybill.consignee }}</td>
+            </tr>
+            <tr>
+                <th>AarClass</th>
+                <td>{{ waybill.aarClass }}</td>
+            </tr>
+            <tr>
+                <th>LengthCapacity</th>
+                <td>{{ waybill.lengthCapacity }}</td>
+            </tr>
+            <tr>
+                <th>RouteVia</th>
+                <td>{{ waybill.routeVia }}</td>
+            </tr>
+            <tr>
+                <th>SpotLocation</th>
+                <td>{{ waybill.spotLocation }}</td>
+            </tr>
+            <tr>
+                <th>LadingQuantity</th>
+                <td>{{ waybill.ladingQuantity }}</td>
+            </tr>
+            <tr>
+                <th>LadingDescription</th>
+                <td>{{ waybill.ladingDescription }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('waybill_index') }}">back to list</a>
+
+    <a href="{{ path('waybill_edit', {'id': waybill.id}) }}">edit</a>
+
+    {{ include('waybill/_delete_form.html.twig') }}
+{% endblock %}

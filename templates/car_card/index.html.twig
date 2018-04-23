@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CarCard index{% endblock %}
+
+{% block body %}
+    <h1>CarCard index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>CarInitial</th>
+                <th>CarNumber</th>
+                <th>AarType</th>
+                <th>LengthCapacity</th>
+                <th>Description</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for car_card in car_cards %}
+            <tr>
+                <td>{{ car_card.id }}</td>
+                <td>{{ car_card.carInitial }}</td>
+                <td>{{ car_card.carNumber }}</td>
+                <td>{{ car_card.aarType }}</td>
+                <td>{{ car_card.lengthCapacity }}</td>
+                <td>{{ car_card.description }}</td>
+                <td>
+                    <a href="{{ path('car_card_show', {'id': car_card.id}) }}">show</a>
+                    <a href="{{ path('car_card_edit', {'id': car_card.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('car_card_new') }}">Create new</a>
+{% endblock %}
