@@ -29,8 +29,17 @@ class TranslationParser
 
         $translationData = Yaml::parseFile($file);
 
+        $this->translations[$key] = [];
+        if (empty($translationData)) {
+            return;
+        }
+
         array_walk($translationData, function ($item) use ($key) {
-            $this->translations[$key][$item[0]] = $item[1];
+            if (isset($this->translations[$key][$item[0]])) {
+                throw new TranslationKeyExistsException($key, $item[0]);
+            }
+
+            $this->translations[$key][$item[0]] = $item[1] ?? $item[0];
         });
     }
 
@@ -47,6 +56,15 @@ class TranslationParser
     {
         if (!isset($this->translations[$key])) {
             $this->loadTranslations($key);
+        }
+
+        if (is_array($this->translations[$key][$value])) {
+            array_walk($this->translations[$key][$value], function ($item) use ($key) {
+                if (!isset($this->translations[$key][$item])) {
+                    throw new TranslationNotFoundException($key, $item);
+                }
+            });
+            return implode(';', $this->translations[$key][$value]);
         }
 
         return $this->translations[$key][$value];

@@ -12,7 +12,7 @@ namespace App\LegacyIndustry\Cleaner;
 use App\LegacyIndustry\Translation\TranslationParser;
 use Psr\Log\LoggerInterface;
 
-abstract class BaseCleaner implements CleanerInterface
+abstract class BaseCleaner
 {
     protected const TRANSLATION_KEY = null;
 
@@ -28,5 +28,6 @@ abstract class BaseCleaner implements CleanerInterface
     protected function logInabilityToClean(string $data)
     {
         $this->logger->debug(sprintf('Cannot clean %s data', static::TRANSLATION_KEY), ['data' => $data]);
+        echo sprintf("- ['%s']\n", $data);
     }
 }

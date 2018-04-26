@@ -10,6 +10,7 @@ namespace App\LegacyIndustry;
 
 
 use App\Entity\LegacyIndustry;
+use App\LegacyIndustry\Cleaner\CommodityCleaner;
 use App\LegacyIndustry\Cleaner\EraCleaner;
 use App\LegacyIndustry\Cleaner\StateCleaner;
 
@@ -17,13 +18,16 @@ class Creator
 {
     private $eraCleaner;
     private $stateCleaner;
+    private $commodityCleaner;
 
     public function __construct(
         EraCleaner $eraCleaner,
-        StateCleaner $stateCleaner
+        StateCleaner $stateCleaner,
+        CommodityCleaner $commodityCleaner
     ) {
         $this->eraCleaner = $eraCleaner;
         $this->stateCleaner = $stateCleaner;
+        $this->commodityCleaner = $commodityCleaner;
     }
 
     public function create(array $data): LegacyIndustry
@@ -35,7 +39,7 @@ class Creator
             ->setState($this->stateCleaner->clean($data[3]))
             ->setReportingMarks($data[4])
             ->setShipReceive($data[5])
-            ->setCommodity($data[6])
+            ->setCommodity($this->commodityCleaner->clean($data[6]))
             ->setStcc($data[7])
             ->setReciprocal($data[8])
             ->setSource($data[9])
