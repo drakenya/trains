@@ -13,7 +13,7 @@ class CommodityCleaner extends BaseCleaner
 {
     protected const TRANSLATION_KEY = 'commodity';
 
-    public function clean(?string $data): ?string
+    public function clean(?string $data): ?array
     {
         $data = trim(strtolower($data));
 
@@ -22,11 +22,16 @@ class CommodityCleaner extends BaseCleaner
         }
 
         if ($this->translationParser->canTranslate(static::TRANSLATION_KEY, $data)) {
-            return $this->translationParser->translate(static::TRANSLATION_KEY, $data);
+            $translation =  $this->translationParser->translate(static::TRANSLATION_KEY, $data);
+            if (empty($translation)) {
+                return null;
+            }
+
+            return is_array($translation) ? $translation : [$translation];
         }
 
         $this->logInabilityToClean($data);
 
-        return $data;
+        return [$data];
     }
 }

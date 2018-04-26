@@ -52,7 +52,13 @@ class TranslationParser
         return isset($this->translations[$key][$value]);
     }
 
-    public function translate(string $key, string $value): ?string
+    /**
+     * @param string $key
+     * @param string $value
+     *
+     * @return string|array|null
+     */
+    public function translate(string $key, string $value)
     {
         if (!isset($this->translations[$key])) {
             $this->loadTranslations($key);
@@ -64,7 +70,8 @@ class TranslationParser
                     throw new TranslationNotFoundException($key, $item);
                 }
             });
-            return implode(';', $this->translations[$key][$value]);
+            return $this->translations[$key][$value];
+//            return implode(';', $this->translations[$key][$value]);
         }
 
         return $this->translations[$key][$value];

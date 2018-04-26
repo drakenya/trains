@@ -13,7 +13,7 @@ class EraCleaner extends BaseCleaner
 {
     protected const TRANSLATION_KEY = 'era';
 
-    public function clean(?string $data): ?string
+    public function clean(?string $data): ?int
     {
         $data = trim($data);
 

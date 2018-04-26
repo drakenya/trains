@@ -28,6 +28,6 @@ abstract class BaseCleaner
     protected function logInabilityToClean(string $data)
     {
         $this->logger->debug(sprintf('Cannot clean %s data', static::TRANSLATION_KEY), ['data' => $data]);
-        echo sprintf("- ['%s']\n", $data);
+//        echo sprintf("- ['%s']\n", $data);
     }
 }

@@ -32,6 +32,11 @@ class Creator
 
     public function create(array $data): LegacyIndustry
     {
+        $commodity = $this->commodityCleaner->clean($data[6]);
+        if (is_array($commodity)) {
+            $commodity = implode(';', $commodity);
+        }
+
         $record = (new LegacyIndustry())
             ->setEra($this->eraCleaner->clean($data[0]))
             ->setName($data[1])
@@ -39,7 +44,7 @@ class Creator
             ->setState($this->stateCleaner->clean($data[3]))
             ->setReportingMarks($data[4])
             ->setShipReceive($data[5])
-            ->setCommodity($this->commodityCleaner->clean($data[6]))
+            ->setCommodity($commodity)
             ->setStcc($data[7])
             ->setReciprocal($data[8])
             ->setSource($data[9])
