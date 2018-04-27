@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\LegacyIndustry;
 use App\Form\LegacyIndustryType;
 use App\Repository\LegacyIndustryRepository;
+use JMS\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,12 +17,42 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class LegacyIndustryController extends Controller
 {
+    private $legacyIndustryRepository;
+    private $serializer;
+
+    public function __construct(LegacyIndustryRepository $legacyIndustryRepository, SerializerInterface $serializer)
+    {
+        $this->legacyIndustryRepository = $legacyIndustryRepository;
+        $this->serializer = $serializer;
+    }
+
     /**
      * @Route("/", name="legacy_industry_index", methods="GET")
      */
-    public function index(LegacyIndustryRepository $legacyIndustryRepository): Response
+    public function index(): Response
     {
-        return $this->render('legacy_industry/index.html.twig', ['legacy_industries' => $legacyIndustryRepository->findAll()]);
+        return $this->render('legacy_industry/index.html.twig', []);
+    }
+
+    /**
+     * @Route("/api/list", name="legacy_industry_api_list", methods="GET")
+     */
+    public function apiList(Request $request): JsonResponse
+    {
+        $data = $this->legacyIndustryRepository->getSelection(
+            $request->get('page'),
+            $request->get('limit'),
+            $request->get('orderBy') ?: null,
+            (bool) $request->get('ascending'),
+            $request->get('query') ?: null
+        );
+
+        $resposeData = [
+            'data' => $data,
+            'count' => $this->legacyIndustryRepository->getRecordCount($request->get('query')),
+        ];
+
+        return new JsonResponse($this->serializer->serialize($resposeData, 'json'), 200, [], true);
     }
 
     /**

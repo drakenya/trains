@@ -19,6 +19,45 @@ class LegacyIndustryRepository extends ServiceEntityRepository
         parent::__construct($registry, LegacyIndustry::class);
     }
 
+    public function getSelection(int $page = 1, int $limit = 10, ?string $sortBy = null, bool $ascending = true, ?string $query = null): array
+    {
+        $builder = $this->createQueryBuilder('l')
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+        ;
+
+        if ($sortBy) {
+            $builder->orderBy('l.'.$sortBy, $ascending ? 'ASC' : 'DESC');
+        }
+
+        if ($query) {
+            $builder->where('l.commodity like :query');
+            $builder->setParameter('query', sprintf('%%%s%%', $query));
+        }
+
+        return $builder
+            ->getQuery()
+            ->getArrayResult()
+        ;
+    }
+
+    public function getRecordCount(?string $query = null): int
+    {
+        $builder = $this->createQueryBuilder('l')
+            ->select('count(l.id)')
+        ;
+
+        if ($query) {
+            $builder->where('l.commodity like :query');
+            $builder->setParameter('query', sprintf('%%%s%%', $query));
+        }
+
+        return $builder
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
 //    /**
 //     * @return LegacyIndustry[] Returns an array of LegacyIndustry objects
 //     */

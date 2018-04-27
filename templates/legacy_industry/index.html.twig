@@ -5,51 +5,58 @@
 {% block body %}
     <h1>LegacyIndustry index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Era</th>
-                <th>Name</th>
-                <th>City</th>
-                <th>State</th>
-                <th>ReportingMarks</th>
-                <th>ShipReceive</th>
-                <th>Commodity</th>
-                <th>Stcc</th>
-                <th>Reciprocal</th>
-                <th>Source</th>
-                <th>ExternalSource</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for legacy_industry in legacy_industries %}
-            <tr>
-                <td>{{ legacy_industry.id }}</td>
-                <td>{{ legacy_industry.era }}</td>
-                <td>{{ legacy_industry.name }}</td>
-                <td>{{ legacy_industry.city }}</td>
-                <td>{{ legacy_industry.state }}</td>
-                <td>{{ legacy_industry.reportingMarks }}</td>
-                <td>{{ legacy_industry.shipReceive }}</td>
-                <td>{{ legacy_industry.commodity }}</td>
-                <td>{{ legacy_industry.stcc }}</td>
-                <td>{{ legacy_industry.reciprocal }}</td>
-                <td>{{ legacy_industry.source }}</td>
-                <td>{{ legacy_industry.externalSource }}</td>
-                <td>
-                    <a href="{{ path('legacy_industry_show', {'id': legacy_industry.id}) }}">show</a>
-                    <a href="{{ path('legacy_industry_edit', {'id': legacy_industry.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="13">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div id="legacy-industry-list">
+        <v-server-table url="{{ path('legacy_industry_api_list') }}" :columns="columns" :options="options">
+            <div slot="actions" slot-scope="props" >
+                <a class="" :href="props.row.id" target="_blank">V</a>
+            </div>
+        </v-server-table>
+    </div>
 
     <a href="{{ path('legacy_industry_new') }}">Create new</a>
+{% endblock %}
+
+{% block stylesheets %}
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-tables-2@1.4.31/compiled/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-tables-2@1.4.31/dist/vue-tables-2.min.js"></script>
+    <script>
+        Vue.use(VueTables.ServerTable, {}, false, 'bulma');
+    </script>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        new Vue({
+            el: "#legacy-industry-list",
+            data: {
+                columns: [
+                    // 'id',
+                    'era', 'name', 'city', 'state', 'reportingMarks', 'shipReceive', 'commodity',
+                    // 'stcc', 'reciprocal',
+                    // 'source', 'externalSource'
+                    'actions',
+                ],
+                options: {
+                    filterByColumn: false,
+                    headings: {
+                        id: 'ID',
+                        era: 'Era',
+                        name: 'Company',
+                        city: 'City',
+                        state: 'State',
+                        reportingMarks: 'Railroad',
+                        shipReceive: 'S/R',
+                        commodity: 'Commodity',
+                        stcc: 'STCC',
+                        reciprocal: 'Reciprocal',
+                        source: 'Source',
+                        externalSource: 'Data Set',
+                        actions: '',
+                    }
+                }
+            }
+        });
+    </script>
 {% endblock %}
