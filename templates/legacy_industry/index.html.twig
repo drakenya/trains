@@ -6,57 +6,146 @@
     <h1>LegacyIndustry index</h1>
 
     <div id="legacy-industry-list">
-        <v-server-table url="{{ path('legacy_industry_api_list') }}" :columns="columns" :options="options">
-            <div slot="actions" slot-scope="props" >
-                <a class="" :href="props.row.id" target="_blank">V</a>
+        <section>
+            <div>
+                <b-field label="Search ...">
+                    <b-input v-model="searchQuery.query" @change.native="onFilter"></b-input>
+                </b-field>
             </div>
-        </v-server-table>
+            <b-table
+                :data="data"
+                :loading="loading"
+
+                paginated
+                pagination-simple
+                backend-pagination
+
+                :total="total"
+                :per-page="perPage"
+                @page-change="onPageChange"
+
+                backend-sorting
+                :default-sort-direction="defaultSortOrder"
+                :default-sort="[sortField, sortOrder]"
+                @sort="onSort"
+            >
+                <template slot-scope="props">
+                    <b-table-column field="era" label="Era" sortable>
+                        {% verbatim %}{{ props.row.era }}{% endverbatim %}
+                    </b-table-column>
+                    <b-table-column field="name" label="Company" sortable>
+                        {% verbatim %}{{ props.row.name }}{% endverbatim %}
+                    </b-table-column>
+                    <b-table-column field="city" label="City" sortable>
+                        {% verbatim %}{{ props.row.city }}{% endverbatim %}
+                    </b-table-column>
+                    <b-table-column field="state" label="State" sortable>
+                        {% verbatim %}{{ props.row.state }}{% endverbatim %}
+                    </b-table-column>
+                    <b-table-column field="reportingMarks" label="Railroad" sortable>
+                        {% verbatim %}{{ props.row.reportingMarks }}{% endverbatim %}
+                    </b-table-column>
+                    <b-table-column field="shipReceive" label="S/R" sortable>
+                        {% verbatim %}{{ props.row.shipReceive }}{% endverbatim %}
+                    </b-table-column>
+                    <b-table-column field="commodity" label="Commodity" sortable filterable>
+                        {% verbatim %}{{ props.row.commodity }}{% endverbatim %}
+                    </b-table-column>
+                    <b-table-column>
+                        <span class="icon is-small">
+                            <a v-bind:href="props.row.viewUrl"><i class="mdi mdi-file-find"></i></a>
+                            <a v-bind:href="props.row.editUrl"><i class="mdi mdi-pencil"></i></a>
+                        </span>
+                    </b-table-column>
+                </template>
+            </b-table>
+        </section>
     </div>
 
-    <a href="{{ path('legacy_industry_new') }}">Create new</a>
+    <a href="{{ path('legacy_industry_new') }}"><i class="mdi mdi-plus mdi-48"></i> Add</a>
 {% endblock %}
 
 {% block stylesheets %}
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue-tables-2@1.4.31/compiled/index.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue-tables-2@1.4.31/dist/vue-tables-2.min.js"></script>
+    <script src="https://unpkg.com/buefy"></script>
     <script>
-        Vue.use(VueTables.ServerTable, {}, false, 'bulma');
+        Vue.use(Buefy.default)
     </script>
 {% endblock %}
 
 {% block javascripts %}
     <script>
-        new Vue({
-            el: "#legacy-industry-list",
-            data: {
-                columns: [
-                    // 'id',
-                    'era', 'name', 'city', 'state', 'reportingMarks', 'shipReceive', 'commodity',
-                    // 'stcc', 'reciprocal',
-                    // 'source', 'externalSource'
-                    'actions',
-                ],
-                options: {
-                    filterByColumn: false,
-                    headings: {
-                        id: 'ID',
-                        era: 'Era',
-                        name: 'Company',
-                        city: 'City',
-                        state: 'State',
-                        reportingMarks: 'Railroad',
-                        shipReceive: 'S/R',
-                        commodity: 'Commodity',
-                        stcc: 'STCC',
-                        reciprocal: 'Reciprocal',
-                        source: 'Source',
-                        externalSource: 'Data Set',
-                        actions: '',
+        const table = {
+            data() {
+                return {
+                    data: [],
+                    total: 0,
+                    loading: false,
+                    sortField: 'id',
+                    sortOrder: 'asc',
+                    defaultSortOrder: 'asc',
+                    page: 1,
+                    perPage: 100,
+                    searchQuery: {
+                        query: '',
                     }
                 }
+            },
+            methods: {
+                loadAsyncData() {
+                    const params = [
+                        'orderBy=' + this.sortField,
+                        'sortOrder=' + this.sortOrder,
+                        'page=' + this.page,
+                        'limit=' + this.perPage,
+                        'query=' + this.searchQuery.query
+                    ].join('&');
+
+                    this.loading = true
+                    axios.get('/legacy-industry/api/list?' + params)
+                        .then(({ data }) => {
+                            this.data = []
+                            let currentTotal = data.count
+                            this.total = currentTotal
+                            data.data.forEach((item) => {
+                                this.data.push(item)
+                            })
+                            this.loading = false;
+                        })
+                        .catch((error) => {
+                            this.data = []
+                            this.total = 0
+                            this.loading = false
+                            throw error
+                        })
+                },
+                onFilter() {
+                    this.loadAsyncData()
+                },
+                onPageChange(page) {
+                    this.page = page
+                    this.loadAsyncData()
+                },
+                onSort(field, order) {
+                    this.sortField = field
+                    this.sortOrder = order
+                    this.loadAsyncData()
+                }
+            },
+            filters: {
+                truncate(value, length) {
+                    return value.length > length
+                        ? value.substr(0, length) + '...'
+                        : value
+                }
+            },
+            mounted() {
+                this.loadAsyncData()
             }
-        });
+        }
+
+        const app = new Vue(table)
+        app.$mount('#legacy-industry-list')
     </script>
 {% endblock %}

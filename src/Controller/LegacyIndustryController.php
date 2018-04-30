@@ -43,9 +43,13 @@ class LegacyIndustryController extends Controller
             $request->get('page'),
             $request->get('limit'),
             $request->get('orderBy') ?: null,
-            (bool) $request->get('ascending'),
+            strtolower($request->get('sortOrder')) === 'asc',
             $request->get('query') ?: null
         );
+        array_walk($data, function (&$item) {
+            $item['viewUrl'] = $this->generateUrl('legacy_industry_show', ['id' => $item['id']]);
+            $item['editUrl'] = $this->generateUrl('legacy_industry_edit', ['id' => $item['id']]);
+        });
 
         $resposeData = [
             'data' => $data,
