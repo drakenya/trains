@@ -11,9 +11,9 @@ namespace App\LegacyIndustry\Translation;
 
 class TranslationNotFoundException extends \Exception
 {
-    public function __construct(string $key, string $value)
+    public function __construct(string $dataType, string $value)
     {
-        $message = sprintf("Could not find translation for '%s' in key space '%s'", $value, $key);
+        $message = sprintf("Could not find translation for '%s' for data type '%s'", $value, $dataType);
         parent::__construct($message);
     }
 }

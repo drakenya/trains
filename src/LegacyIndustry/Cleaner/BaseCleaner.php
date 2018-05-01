@@ -14,8 +14,6 @@ use Psr\Log\LoggerInterface;
 
 abstract class BaseCleaner
 {
-    protected const TRANSLATION_KEY = null;
-
     protected $translationParser;
     private $logger;
 
@@ -27,7 +25,6 @@ abstract class BaseCleaner
 
     protected function logInabilityToClean(string $data)
     {
-        $this->logger->debug(sprintf('Cannot clean %s data', static::TRANSLATION_KEY), ['data' => $data]);
-//        echo sprintf("- ['%s']\n", $data);
+        $this->logger->debug('Cannot clean data', ['type' => $this->translationParser->getDataType(), 'data' => $data]);
     }
 }

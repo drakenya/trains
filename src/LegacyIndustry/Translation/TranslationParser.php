@@ -9,71 +9,66 @@
 namespace App\LegacyIndustry\Translation;
 
 
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
 
 class TranslationParser
 {
+    private $dataType;
     private $translations = [];
 
-    private $kernel;
-
-    public function __construct(KernelInterface $kernel)
+    public function __construct(string $dataType, string $translationFile)
     {
-        $this->kernel = $kernel;
+        $this->dataType = $dataType;
+        $this->loadTranslations($translationFile);
     }
 
-    private function loadTranslations(string $key)
+    private function loadTranslations(string $file)
     {
-        $file = sprintf('%s/../config/legacy_industry_cleaner/%s_translation.yaml', $this->kernel->getRootDir(), $key);
-
         $translationData = Yaml::parseFile($file);
 
-        $this->translations[$key] = [];
+        $this->translations = [];
         if (empty($translationData)) {
             return;
         }
 
-        array_walk($translationData, function ($item) use ($key) {
-            if (isset($this->translations[$key][$item[0]])) {
-                throw new TranslationKeyExistsException($key, $item[0]);
+        array_walk($translationData, function ($item) use ($file) {
+            if (isset($this->translations[$item[0]])) {
+                throw new TranslationKeyExistsException($this->dataType, $item[0]);
             }
 
-            $this->translations[$key][$item[0]] = $item[1] ?? $item[0];
+            $this->translations[$item[0]] = $item[1] ?? $item[0];
         });
     }
 
-    public function canTranslate(string $key, string $value): bool
+    /**
+     * @return string
+     */
+    public function getDataType(): string
     {
-        if (!isset($this->translations[$key])) {
-            $this->loadTranslations($key);
-        }
+        return $this->dataType;
+    }
 
-        return isset($this->translations[$key][$value]);
+    public function canTranslate(string $value): bool
+    {
+        return isset($this->translations[$value]);
     }
 
     /**
-     * @param string $key
      * @param string $value
      *
      * @return string|array|null
      */
-    public function translate(string $key, string $value)
+    public function translate(string $value)
     {
-        if (!isset($this->translations[$key])) {
-            $this->loadTranslations($key);
-        }
-
-        if (is_array($this->translations[$key][$value])) {
-            array_walk($this->translations[$key][$value], function ($item) use ($key) {
-                if (!isset($this->translations[$key][$item])) {
-                    throw new TranslationNotFoundException($key, $item);
+        if (is_array($this->translations[$value])) {
+            array_walk($this->translations[$value], function ($item) {
+                if (!isset($this->translations[$item])) {
+                    throw new TranslationNotFoundException($this->dataType, $item);
                 }
             });
-            return $this->translations[$key][$value];
-//            return implode(';', $this->translations[$key][$value]);
+            return $this->translations[$value];
         }
 
-        return $this->translations[$key][$value];
+        return $this->translations[$value];
     }
 }

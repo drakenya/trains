@@ -11,9 +11,9 @@ namespace App\LegacyIndustry\Translation;
 
 class TranslationKeyExistsException extends \Exception
 {
-    public function __construct(string $key, string $value)
+    public function __construct(string $dataType, string $value)
     {
-        $message = sprintf("Translation key already exists for '%s' in key space '%s'", $value, $key);
+        $message = sprintf("Translation key already exists for '%s' in data type '%s'", $value, $dataType);
         parent::__construct($message);
     }
 }

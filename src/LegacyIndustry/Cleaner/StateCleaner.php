@@ -11,8 +11,6 @@ namespace App\LegacyIndustry\Cleaner;
 
 class StateCleaner extends BaseCleaner
 {
-    protected const TRANSLATION_KEY = 'state';
-
     private const STATES = [
         'AL', 'AK', 'AS', 'AZ', 'AR',
         'CA', 'CO', 'CT',
@@ -50,8 +48,8 @@ class StateCleaner extends BaseCleaner
             return $data;
         }
 
-        if ($this->translationParser->canTranslate(static::TRANSLATION_KEY, $data)) {
-            return $this->translationParser->translate(static::TRANSLATION_KEY, $data);
+        if ($this->translationParser->canTranslate($data)) {
+            return $this->translationParser->translate($data);
         }
 
         $this->logInabilityToClean($data);

@@ -11,8 +11,6 @@ namespace App\LegacyIndustry\Cleaner;
 
 class CommodityCleaner extends BaseCleaner
 {
-    protected const TRANSLATION_KEY = 'commodity';
-
     public function clean(?string $data): ?array
     {
         $data = trim(strtolower($data));
@@ -21,8 +19,8 @@ class CommodityCleaner extends BaseCleaner
             return null;
         }
 
-        if ($this->translationParser->canTranslate(static::TRANSLATION_KEY, $data)) {
-            $translation =  $this->translationParser->translate(static::TRANSLATION_KEY, $data);
+        if ($this->translationParser->canTranslate($data)) {
+            $translation =  $this->translationParser->translate($data);
             if (empty($translation)) {
                 return null;
             }

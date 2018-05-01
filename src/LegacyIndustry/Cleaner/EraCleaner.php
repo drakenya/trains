@@ -11,8 +11,6 @@ namespace App\LegacyIndustry\Cleaner;
 
 class EraCleaner extends BaseCleaner
 {
-    protected const TRANSLATION_KEY = 'era';
-
     public function clean(?string $data): ?int
     {
         $data = trim($data);
@@ -29,22 +27,22 @@ class EraCleaner extends BaseCleaner
 
         if (is_numeric($data)) {
             if (strlen($data) === 4) {
-                return $data;
+                return (int) $data;
             }
 
             if (strlen($data) === 2 && $data > date('y')) {
-                return '19' . $data;
+                return (int) ('19' . $data);
             }
 
-            return '20' . $data;
+            return (int) ('20' . $data);
         }
 
-        if ($this->translationParser->canTranslate(static::TRANSLATION_KEY, $data)) {
-            return $this->translationParser->translate(static::TRANSLATION_KEY, $data);
+        if ($this->translationParser->canTranslate($data)) {
+            return (int) $this->translationParser->translate($data);
         }
 
         $this->logInabilityToClean($data);
 
-        return $data;
+        return (int) $data;
     }
 }
