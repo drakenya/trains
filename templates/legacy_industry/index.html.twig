@@ -36,11 +36,8 @@
                     <b-table-column field="name" label="Company" sortable>
                         {% verbatim %}{{ props.row.name }}{% endverbatim %}
                     </b-table-column>
-                    <b-table-column field="city" label="City" sortable>
-                        {% verbatim %}{{ props.row.city }}{% endverbatim %}
-                    </b-table-column>
-                    <b-table-column field="state" label="State" sortable>
-                        {% verbatim %}{{ props.row.state }}{% endverbatim %}
+                    <b-table-column field="city" label="Location" sortable>
+                        {% verbatim %}{{ props.row.city }}, {{ props.row.state }}{% endverbatim %}
                     </b-table-column>
                     <b-table-column field="reportingMarks" label="Railroad" sortable>
                         {% verbatim %}{{ props.row.reportingMarks }}{% endverbatim %}
@@ -54,7 +51,7 @@
                     <b-table-column>
                         <span class="icon is-small">
                             <a v-bind:href="props.row.viewUrl"><i class="mdi mdi-file-find"></i></a>
-                            <a v-bind:href="props.row.editUrl"><i class="mdi mdi-pencil"></i></a>
+                            {% if is_granted('ROLE_ADMIN') %}<a v-bind:href="props.row.editUrl"><i class="mdi mdi-pencil"></i></a>{% endif %}
                         </span>
                     </b-table-column>
                 </template>
@@ -62,7 +59,7 @@
         </section>
     </div>
 
-    <a href="{{ path('legacy_industry_new') }}"><i class="mdi mdi-plus mdi-48"></i> Add</a>
+    {% if is_granted('ROLE_ADMIN') %}<a href="{{ path('legacy_industry_new') }}"><i class="mdi mdi-plus mdi-48"></i> Add</a>{% endif %}
 {% endblock %}
 
 {% block stylesheets %}

@@ -6,6 +6,7 @@ use App\Entity\LegacyIndustry;
 use App\Form\LegacyIndustryType;
 use App\Repository\LegacyIndustryRepository;
 use JMS\Serializer\SerializerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,6 +61,8 @@ class LegacyIndustryController extends Controller
     }
 
     /**
+     * @Security("has_role('ROLE_ADMIN')")
+     *
      * @Route("/new", name="legacy_industry_new", methods="GET|POST")
      */
     public function new(Request $request): Response
@@ -91,6 +94,8 @@ class LegacyIndustryController extends Controller
     }
 
     /**
+     * @Security("has_role('ROLE_ADMIN')")
+     *
      * @Route("/{id}/edit", name="legacy_industry_edit", methods="GET|POST")
      */
     public function edit(Request $request, LegacyIndustry $legacyIndustry): Response
@@ -111,6 +116,8 @@ class LegacyIndustryController extends Controller
     }
 
     /**
+     * @Security("has_role('ROLE_ADMIN')")
+     *
      * @Route("/{id}", name="legacy_industry_delete", methods="DELETE")
      */
     public function delete(Request $request, LegacyIndustry $legacyIndustry): Response
