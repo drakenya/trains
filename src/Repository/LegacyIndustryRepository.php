@@ -31,7 +31,7 @@ class LegacyIndustryRepository extends ServiceEntityRepository
         }
 
         if ($query) {
-            $builder->where('l.commodity like :query or l.name like :query');
+            $builder->where('l.commodity like :query or l.name like :query or l.city like :query');
             $builder->setParameter('query', sprintf('%%%s%%', $query));
         }
 
@@ -48,7 +48,7 @@ class LegacyIndustryRepository extends ServiceEntityRepository
         ;
 
         if ($query) {
-            $builder->where('l.commodity like :query');
+            $builder->where('l.commodity like :query or l.name like :query or l.city like :query');
             $builder->setParameter('query', sprintf('%%%s%%', $query));
         }
 
