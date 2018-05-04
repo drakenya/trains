@@ -37,7 +37,7 @@
                         {% verbatim %}{{ props.row.name }}{% endverbatim %}
                     </b-table-column>
                     <b-table-column field="city" label="Location" sortable>
-                        {% verbatim %}{{ props.row.city }}, {{ props.row.state }}{% endverbatim %}
+                        {% verbatim %}<span v-if="props.row.city">{{ props.row.city }}, </span>{{ props.row.state }}{% endverbatim %}
                     </b-table-column>
                     <b-table-column field="reportingMarks" label="Railroad" sortable>
                         {% verbatim %}{{ props.row.reportingMarks }}{% endverbatim %}
