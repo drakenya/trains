@@ -42,24 +42,25 @@ class WaybillForm extends BaseForm
         $len = Header::createAtFieldsBottom($aar, static::WIDTH/2, static::BASE_FIELD_HEIGHT/2);
         $desc = Header::createAtFieldsRight($aar, static::WIDTH/2, static::BASE_FIELD_HEIGHT);
 
-        $from = Header::createAtFieldsBottom($len, static::WIDTH/2, static::BASE_FIELD_HEIGHT/static::BASE_FIELD_HEIGHT_SLICES);
-        $fromData = Data::createAtFieldsBottom($from, static::WIDTH/2, static::BASE_FIELD_HEIGHT*(static::BASE_FIELD_HEIGHT_SLICES-1)/static::BASE_FIELD_HEIGHT_SLICES);
-        $to = Header::createAtFieldsRight($from, static::WIDTH/2, static::BASE_FIELD_HEIGHT/static::BASE_FIELD_HEIGHT_SLICES);
+        $to = Header::createAtFieldsBottom($len, static::WIDTH/2, static::BASE_FIELD_HEIGHT/static::BASE_FIELD_HEIGHT_SLICES);
         $toData = Data::createAtFieldsBottom($to, static::WIDTH/2, static::BASE_FIELD_HEIGHT*(static::BASE_FIELD_HEIGHT_SLICES-1)/static::BASE_FIELD_HEIGHT_SLICES);
+        $from = Header::createAtFieldsRight($to, static::WIDTH/2, static::BASE_FIELD_HEIGHT/static::BASE_FIELD_HEIGHT_SLICES);
+        $fromData = Data::createAtFieldsBottom($from, static::WIDTH/2, static::BASE_FIELD_HEIGHT*(static::BASE_FIELD_HEIGHT_SLICES-1)/static::BASE_FIELD_HEIGHT_SLICES);
 
-        $shipper = Header::createAtFieldsBottom($fromData, static::WIDTH/2, static::BASE_FIELD_HEIGHT/static::BASE_FIELD_HEIGHT_SLICES);
-        $shipperData = Data::createAtFieldsBottom($shipper, static::WIDTH/2, static::BASE_FIELD_HEIGHT*(static::BASE_FIELD_HEIGHT_SLICES-1)/static::BASE_FIELD_HEIGHT_SLICES);
-        $consignee = Header::createAtFieldsRight($shipper, static::WIDTH/2, static::BASE_FIELD_HEIGHT/static::BASE_FIELD_HEIGHT_SLICES);
+        $consignee = Header::createAtFieldsBottom($toData, static::WIDTH/2, static::BASE_FIELD_HEIGHT/static::BASE_FIELD_HEIGHT_SLICES);
         $consigneeData = Data::createAtFieldsBottom($consignee, static::WIDTH/2, static::BASE_FIELD_HEIGHT*(static::BASE_FIELD_HEIGHT_SLICES-1)/static::BASE_FIELD_HEIGHT_SLICES);
+        $shipper = Header::createAtFieldsRight($consignee, static::WIDTH/2, static::BASE_FIELD_HEIGHT/static::BASE_FIELD_HEIGHT_SLICES);
+        $shipperData = Data::createAtFieldsBottom($shipper, static::WIDTH/2, static::BASE_FIELD_HEIGHT*(static::BASE_FIELD_HEIGHT_SLICES-1)/static::BASE_FIELD_HEIGHT_SLICES);
 
+
+        $routeVia = Header::createAtFieldsBottom($consigneeData, static::WIDTH/2, static::BASE_FIELD_HEIGHT/static::BASE_FIELD_HEIGHT_SLICES);
+        $routeViaData = Data::createAtFieldsBottom($routeVia, static::WIDTH/2, static::BASE_FIELD_HEIGHT*(static::BASE_FIELD_HEIGHT_SLICES-1)/static::BASE_FIELD_HEIGHT_SLICES);
         $aarClass = Header::createAtFieldsBottom($shipperData, static::WIDTH/2/2, static::BASE_FIELD_HEIGHT/2);
         $aarClassData = Data::createAtFieldsRight($aarClass, static::WIDTH/2/2, static::BASE_FIELD_HEIGHT/2);
         $lenCapy = Header::createAtFieldsBottom($aarClass, static::WIDTH/2/2, static::BASE_FIELD_HEIGHT/2);
         $lenCapyData = Data::createAtFieldsRight($lenCapy, static::WIDTH/2/2, static::BASE_FIELD_HEIGHT/2);
-        $routeVia = Header::createAtFieldsBottom($consigneeData, static::WIDTH/2, static::BASE_FIELD_HEIGHT/static::BASE_FIELD_HEIGHT_SLICES);
-        $routeViaData = Data::createAtFieldsBottom($routeVia, static::WIDTH/2, static::BASE_FIELD_HEIGHT*(static::BASE_FIELD_HEIGHT_SLICES-1)/static::BASE_FIELD_HEIGHT_SLICES);
 
-        $spotting = Header::createAtFieldsBottom($lenCapy, static::WIDTH/2, static::BASE_FIELD_HEIGHT*(2/6));
+        $spotting = Header::createAtFieldsBottom($routeViaData, static::WIDTH/2, static::BASE_FIELD_HEIGHT*(2/6));
         $spottingData = Data::createAtFieldsRight($spotting, static::WIDTH/2, static::BASE_FIELD_HEIGHT*(2/6));
 
         $pkgs = Header::createAtFieldsBottom($spotting, static::WIDTH/4, static::BASE_FIELD_HEIGHT*(1/6));
@@ -103,12 +104,12 @@ class WaybillForm extends BaseForm
             VerticalLine::createAtFieldRight($carInitial),
             VerticalLine::createAtFieldRight($aar),
             VerticalLine::createAtFieldRight($len),
-            VerticalLine::createAtFieldRight($from),
-            VerticalLine::createAtFieldRight($fromData),
-            VerticalLine::createAtFieldRight($shipper),
-            VerticalLine::createAtFieldRight($shipperData),
-            VerticalLine::createAtFieldRight($aarClassData),
-            VerticalLine::createAtFieldRight($lenCapyData),
+            VerticalLine::createAtFieldRight($to),
+            VerticalLine::createAtFieldRight($toData),
+            VerticalLine::createAtFieldRight($consignee),
+            VerticalLine::createAtFieldRight($consigneeData),
+            VerticalLine::createAtFieldRight($routeVia),
+            VerticalLine::createAtFieldRight($routeViaData),
         ];
         $horizontalLines = [
             HorizontalLine::createAtFieldBottom($carInitial),
