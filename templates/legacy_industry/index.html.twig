@@ -9,7 +9,17 @@
         <section>
             <div>
                 <b-field label="Search ...">
-                    <b-input v-model="searchQuery.query"></b-input>
+                    <b-input v-model="searchQuery.name" placeholder="Company Name"></b-input>
+                    <b-input v-model="searchQuery.location" placeholder="Location"></b-input>
+                    <b-input v-model="searchQuery.reportingMarks" placeholder="Reporting Marks"></b-input>
+                    <b-select v-model="searchQuery.shipReceive" placeholder="Ship / Receive">
+                        <option value="">All</option>
+                        <option value="S">S</option>
+                        <option value="R">R</option>
+                        <option value="R/S">S/R</option>
+                        <option value="T">T</option>
+                    </b-select>
+                    <b-input v-model="searchQuery.commodity" placeholder="Commodity"></b-input>
                 </b-field>
             </div>
             <b-table
@@ -94,7 +104,11 @@
                     page: 1,
                     perPage: 100,
                     searchQuery: {
-                        query: ''
+                        name: '',
+                        location: '',
+                        reportingMarks: '',
+                        shipReceive: '',
+                        commodity: ''
                     }
                 }
             },
@@ -113,7 +127,11 @@
                         'sortOrder=' + this.sortOrder,
                         'page=' + this.page,
                         'limit=' + this.perPage,
-                        'query=' + this.searchQuery.query
+                        'query[name]=' + this.searchQuery.name,
+                        'query[location]=' + this.searchQuery.location,
+                        'query[reportingMarks]=' + encodeURIComponent(this.searchQuery.reportingMarks),
+                        'query[shipReceive]=' + this.searchQuery.shipReceive,
+                        'query[commodity]=' + this.searchQuery.commodity,
                     ].join('&');
 
                     this.loading = true
@@ -133,7 +151,7 @@
                             this.loading = false
                             throw error
                         })
-                }, 250),
+                }, 500),
                 onFilter() {
                     this.loadAsyncData()
                 },

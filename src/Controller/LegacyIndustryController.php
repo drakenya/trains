@@ -52,12 +52,12 @@ class LegacyIndustryController extends Controller
             $item['editUrl'] = $this->generateUrl('legacy_industry_edit', ['id' => $item['id']]);
         });
 
-        $resposeData = [
+        $responseData = [
             'data' => $data,
-            'count' => $this->legacyIndustryRepository->getRecordCount($request->get('query')),
+            'count' => $this->legacyIndustryRepository->getRecordCount($request->get('query') ?: null),
         ];
 
-        return new JsonResponse($this->serializer->serialize($resposeData, 'json'), 200, [], true);
+        return new JsonResponse($this->serializer->serialize($responseData, 'json'), 200, [], true);
     }
 
     /**

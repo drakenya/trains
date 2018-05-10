@@ -19,7 +19,7 @@ class LegacyIndustryRepository extends ServiceEntityRepository
         parent::__construct($registry, LegacyIndustry::class);
     }
 
-    public function getSelection(int $page = 1, int $limit = 10, ?string $sortBy = null, bool $ascending = true, ?string $query = null): array
+    public function getSelection(int $page = 1, int $limit = 10, ?string $sortBy = null, bool $ascending = true, ?array $query = null): array
     {
         $builder = $this->createQueryBuilder('l')
             ->setFirstResult(($page - 1) * $limit)
@@ -31,8 +31,14 @@ class LegacyIndustryRepository extends ServiceEntityRepository
         }
 
         if ($query) {
-            $builder->where('l.commodity like :query or l.name like :query or l.city like :query');
-            $builder->setParameter('query', sprintf('%%%s%%', $query));
+            foreach ($query as $field => $value) {
+                if (empty($value)) {
+                    continue;
+                }
+
+                $builder->andWhere(sprintf('l.%s like :query_%s', $field, $field));
+                $builder->setParameter(sprintf('query_%s', $field), sprintf('%%%s%%', $value));
+            }
         }
 
         return $builder
@@ -41,15 +47,21 @@ class LegacyIndustryRepository extends ServiceEntityRepository
         ;
     }
 
-    public function getRecordCount(?string $query = null): int
+    public function getRecordCount(?array $query = null): int
     {
         $builder = $this->createQueryBuilder('l')
             ->select('count(l.id)')
         ;
 
         if ($query) {
-            $builder->where('l.commodity like :query or l.name like :query or l.city like :query');
-            $builder->setParameter('query', sprintf('%%%s%%', $query));
+            foreach ($query as $field => $value) {
+                if (empty($value)) {
+                    continue;
+                }
+
+                $builder->andWhere(sprintf('l.%s like :query_%s', $field, $field));
+                $builder->setParameter(sprintf('query_%s', $field), sprintf('%%%s%%', $value));
+            }
         }
 
         return $builder
