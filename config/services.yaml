@@ -30,19 +30,19 @@ services:
     app.legacy_industry.translation.commodity_translation_parser:
         class: App\LegacyIndustry\Translation\TranslationParser
         arguments:
-            $dataType: 'commodity'
+            $dataType: commodity
             $translationFile: '%kernel.project_dir%/config/legacy_industry_cleaner/commodity_translation.yaml'
 
     app.legacy_industry.translation.era_translation_parser:
         class: App\LegacyIndustry\Translation\TranslationParser
         arguments:
-            $dataType: 'era'
+            $dataType: era
             $translationFile: '%kernel.project_dir%/config/legacy_industry_cleaner/era_translation.yaml'
 
     app.legacy_industry.translation.state_translation_parser:
         class: App\LegacyIndustry\Translation\TranslationParser
         arguments:
-            $dataType: 'state'
+            $dataType: state
             $translationFile: '%kernel.project_dir%/config/legacy_industry_cleaner/state_translation.yaml'
 
     App\LegacyIndustry\Loader\Loader:
@@ -87,3 +87,91 @@ services:
             $translationParser: '@app.legacy_industry.translation.state_translation_parser'
         tags:
             - { name: monolog.logger, channel: legacy_industry_cleaner }
+
+    App\Paperwork\Creator\WaybillFormCreator:
+        arguments:
+            $fieldData:
+                - { id: formHeader, type: formHeader, position: origin, width: 1, height: 1 }
+                - { id: carInitial, type: header, position: bottom, reference: formHeader, width: '@=1/4', height: '@=1/2' }
+                - { id: carInitialData, type: data, position: right, reference: carInitial,  width: '@=1/4', height: '@=1/2' }
+                - { id: carNumber, type: header, position: right, reference: carInitialData, width: '@=1/4', height: '@=1/2' }
+                - { id: carNumberData, type: data, position: right, reference: carNumber, width: '@=1/4', height: '@=1/2'}
+                - { id: aar, type: header, position: bottom, reference: carInitial, width: '@=1/4', height: '@=1/2' }
+                - { id: aarData, type: data, position: right, reference: aar,  width: '@=1/4', height: '@=1/2' }
+                - { id: len, type: header, position: right, reference: aarData, width: '@=1/4', height: '@=1/2' }
+                - { id: lenData, type: data, position: right, reference: len, width: '@=1/4', height: '@=1/2'}
+                - { id: marginLeft, type: data, position: bottom, reference: aar, width: '@=1/2', height: '@=1/6'}
+                - { id: marginRight, type: data, position: right, reference: marginLeft, width: '@=1/2', height: '@=1/6'}
+                - { id: stopThisCarAt, type: header, position: bottom, reference: marginLeft, width: '@=1/4', height: '@=1/3' }
+                - { id: stopThisCarAtData, type: data, position: right, reference: stopThisCarAt,  width: '@=1/4', height: '@=1/3' }
+                - { id: stopThisCarAt2, type: header, position: bottom, reference: stopThisCarAt, width: '@=1/4', height: '@=1/3' }
+                - { id: stopThisCarAt2Data, type: data, position: right, reference: stopThisCarAt2, width: '@=1/4', height: '@=1/3'}
+                - { id: waybillDate, type: header, position: right, reference: stopThisCarAtData, width: '@=1/4', height: '@=1/3' }
+                - { id: waybillDateData, type: data, position: right, reference: waybillDate,  width: '@=1/4', height: '@=1/3' }
+                - { id: waybillNumber, type: header, position: bottom, reference: waybillDate, width: '@=1/4', height: '@=1/3' }
+                - { id: waybillNumberData, type: data, position: right, reference: waybillNumber, width: '@=1/4', height: '@=1/3'}
+                - { id: to, type: header, position: bottom, reference: stopThisCarAt2, width: '@=1/2', height: '@=1/6' }
+                - { id: toData, type: data, position: bottom, reference: to,  width: '@=1/2', height: '@=5/6' }
+                - { id: from, type: header, position: right, reference: to, width: '@=1/2', height: '@=1/6' }
+                - { id: fromData, type: data, position: bottom, reference: from, width: '@=1/2', height: '@=5/6'}
+                - { id: consignee, type: header, position: bottom, reference: toData, width: '@=1/2', height: '@=1/6' }
+                - { id: consigneeData, type: data, position: bottom, reference: consignee,  width: '@=1/2', height: '@=5/6' }
+                - { id: shipper, type: header, position: right, reference: consignee, width: '@=1/2', height: '@=1/6' }
+                - { id: shipperData, type: data, position: bottom, reference: shipper, width: '@=1/2', height: '@=5/6'}
+                - { id: routeVia, type: header, position: bottom, reference: consigneeData, width: '@=1/4', height: '@=1/2' }
+                - { id: routeViaData, type: data, position: right, reference: routeVia,  width: '@=3/4', height: '@=1/2' }
+                - { id: instructionsAndExceptions, type: header, position: bottom, reference: routeVia, width: '@=1/3', height: '@=1/3' }
+                - { id: instructionsAndExceptionsData, type: data, position: right, reference: instructionsAndExceptions,  width: '@=2/3', height: '@=1/3' }
+                - { id: pkgs, type: header, position: bottom, reference: instructionsAndExceptions, width: '@=1/4', height: '@=1/6' }
+                - { id: pkgsData, type: data, position: bottom, reference: pkgs,  width: '@=1/4', height: '@=5/6' }
+                - { id: description, type: header, position: right, reference: pkgs, width: '@=3/4', height: '@=1/6' }
+                - { id: descriptionData, type: data, position: right, reference: pkgsData, width: '@=3/4', height: '@=7/6'}
+            $lines:
+                - { type: horizontal, position: bottom, reference: carInitial }
+                - { type: horizontal, position: bottom, reference: carInitialData }
+                - { type: horizontal, position: bottom, reference: carNumber }
+                - { type: horizontal, position: bottom, reference: carNumberData }
+                - { type: horizontal, position: bottom, reference: consigneeData }
+                - { type: horizontal, position: bottom, reference: formHeader }
+                - { type: horizontal, position: bottom, reference: fromData }
+                - { type: horizontal, position: bottom, reference: instructionsAndExceptions }
+                - { type: horizontal, position: bottom, reference: instructionsAndExceptionsData }
+                - { type: horizontal, position: bottom, reference: marginLeft }
+                - { type: horizontal, position: bottom, reference: marginRight }
+                - { type: horizontal, position: bottom, reference: routeVia }
+                - { type: horizontal, position: bottom, reference: routeViaData }
+                - { type: horizontal, position: bottom, reference: shipperData }
+                - { type: horizontal, position: bottom, reference: stopThisCarAt2 }
+                - { type: horizontal, position: bottom, reference: stopThisCarAt2Data }
+                - { type: horizontal, position: bottom, reference: toData }
+                - { type: horizontal, position: bottom, reference: waybillDate }
+                - { type: horizontal, position: bottom, reference: waybillDateData }
+                - { type: horizontal, position: bottom, reference: waybillNumber }
+                - { type: horizontal, position: bottom, reference: waybillNumberData }
+                - { type: vertical, position: right, reference: aarData }
+                - { type: vertical, position: right, reference: carInitialData }
+                - { type: vertical, position: right, reference: consignee }
+                - { type: vertical, position: right, reference: consigneeData }
+                - { type: vertical, position: right, reference: marginLeft }
+                - { type: vertical, position: right, reference: stopThisCarAt2Data }
+                - { type: vertical, position: right, reference: stopThisCarAtData }
+                - { type: vertical, position: right, reference: to }
+                - { type: vertical, position: right, reference: toData }
+            $headerLabels:
+                formHeader: 'Freight Waybill'
+                carInitial: 'Car Initial'
+                carNumber: 'Car Number'
+                aar: 'AAR Class of Car Ordered'
+                len: 'Length/Capy of Car Ordered'
+                stopThisCarAt: 'Stop This Car At'
+                stopThisCarAt2: 'At'
+                waybillDate: 'Waybill Date'
+                waybillNumber: 'Waybill Number'
+                to: 'To Station State'
+                from: 'From Station State'
+                consignee: 'Consignee & Address'
+                shipper: 'Shipper'
+                routeVia: 'Route/Via'
+                instructionsAndExceptions: 'Instructions & Exceptions'
+                pkgs: '# Pkgs'
+                description: 'Description of Articles'

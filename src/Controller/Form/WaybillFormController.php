@@ -3,6 +3,7 @@
 namespace App\Controller\Form;
 
 use App\Entity\Waybill;
+use App\Paperwork\Creator\WaybillFormCreator;
 use App\Paperwork\Form\WaybillForm;
 use App\Repository\WaybillRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,9 +17,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class WaybillFormController extends Controller
 {
     private $waybillRepository;
+    private $creator;
 
-    public function __construct(WaybillRepository $waybillRepository)
+    public function __construct(WaybillFormCreator $creator, WaybillRepository $waybillRepository)
     {
+        $this->creator = $creator;
         $this->waybillRepository = $waybillRepository;
     }
 
@@ -38,7 +41,7 @@ class WaybillFormController extends Controller
         }
 
         $waybillForms = array_map(function (Waybill $waybill) {
-            return new WaybillForm($waybill);
+            return $this->creator->create($waybill);
         }, $waybills);
 
         if ($this->container->has('profiler'))

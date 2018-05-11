@@ -11,6 +11,6 @@ namespace App\Paperwork\Form;
 
 abstract class BaseForm implements FormInterface
 {
-    const WIDTH = 2.5;
-    const HEIGHT = 3.5;
+    public const WIDTH = 2.5;
+    public const HEIGHT = 3.5;
 }
