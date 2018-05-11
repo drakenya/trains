@@ -29,7 +29,7 @@ class WaybillFixtures extends Fixture
                 ->setConsignee($faker->company)
                 ->setAarClass($faker->randomElement(['XM', 'XA', 'HT']))
                 ->setLengthCapacity($faker->randomElement(["40'", "50'", "70t", "100t"]))
-                ->setRouteVia($faker->regexify('([A-Z]{2,3}-){0,2}[A-Z]{2,3}'))
+                ->setRouteVia($faker->regexify('([A-Z]{2,3}-){5,8}[A-Z]{2,3}'))
                 ->setSpotLocation(sprintf('%s.%s', $faker->randomNumber(3), $faker->randomNumber(3)))
                 ->setLadingQuantity($faker->randomElement(['C/L']))
                 ->setLadingDescription($faker->words(2, true))
