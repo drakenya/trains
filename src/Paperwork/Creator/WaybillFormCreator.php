@@ -99,7 +99,7 @@ class WaybillFormCreator
             case 'consigneeData': return $waybill->getConsignee();
             case 'descriptionData': return $waybill->getLadingDescription();
             case 'fromData': return $waybill->getFromAddress();
-            case 'instructionsAndExceptionsData': return $waybill->getSpotLocation();
+            case 'instructionsAndExceptionsData': return $waybill->getInstructionsExceptions();
             case 'lenData': return '50';
             case 'marginLeft': return null;
             case 'marginRight': return null;
@@ -107,10 +107,10 @@ class WaybillFormCreator
             case 'routeViaData': return $waybill->getRouteVia();
             case 'shipperData': return $waybill->getShipper();
             case 'stopThisCarAt2Data': return null;
-            case 'stopThisCarAtData': return $waybill->getSpotLocation();
+            case 'stopThisCarAtData': return $waybill->getStopAt();
             case 'toData': return $waybill->getToAddress();
-            case 'waybillDateData': return (new \DateTime())->format('m/d/y');
-            case 'waybillNumberData': return rand(10000, 90000);
+            case 'waybillDateData': return $waybill->getUpdatedAt()->format('m/d/y');
+            case 'waybillNumberData': return $waybill->getNumber();
         }
 
         throw new UnknownDataKeyException($key);

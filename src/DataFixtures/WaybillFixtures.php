@@ -23,16 +23,17 @@ class WaybillFixtures extends Fixture
 
         for ($i = 0; $i < static::FIXTURES_TO_GENERATE; $i++) {
             $waybill = (new Waybill())
+                ->setNumber(rand(10000, 99999))
                 ->setFromAddress(sprintf('%s, %s', $faker->city, $faker->stateAbbr))
                 ->setToAddress(sprintf('%s, %s', $faker->city, $faker->stateAbbr))
                 ->setShipper($faker->company)
                 ->setConsignee($faker->company)
                 ->setAarClass($faker->randomElement(['XM', 'XA', 'HT']))
-                ->setLengthCapacity($faker->randomElement(["40'", "50'", "70t", "100t"]))
                 ->setRouteVia($faker->regexify('([A-Z]{2,3}-){5,8}[A-Z]{2,3}'))
-                ->setSpotLocation(sprintf('%s.%s', $faker->randomNumber(3), $faker->randomNumber(3)))
+                ->setStopAt(sprintf('%s.%s', $faker->randomNumber(3), $faker->randomNumber(3)))
                 ->setLadingQuantity($faker->randomElement(['C/L']))
                 ->setLadingDescription($faker->words(2, true))
+                ->setInstructionsExceptions($faker->optional(0.25)->words(3, true))
             ;
             $manager->persist($waybill);
         }

@@ -18,6 +18,11 @@ class Waybill
     private $id;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $number;
+
+    /**
      * @ORM\Column(type="string", length=64, nullable=true)
      */
     private $fromAddress;
@@ -38,24 +43,29 @@ class Waybill
     private $consignee;
 
     /**
+     * @ORM\Column(type="string", length=64, nullable=true)
+     */
+    private $stopAt;
+
+    /**
+     * @ORM\Column(type="string", length=64, nullable=true)
+     */
+    private $StopAt2;
+
+    /**
      * @ORM\Column(type="string", length=3, nullable=true)
      */
     private $aarClass;
 
     /**
-     * @ORM\Column(type="string", length=10, nullable=true)
+     * @ORM\Column(type="string", length=64, nullable=true)
      */
-    private $lengthCapacity;
+    private $instructionsExceptions;
 
     /**
      * @ORM\Column(type="string", length=64, nullable=true)
      */
     private $routeVia;
-
-    /**
-     * @ORM\Column(type="string", length=64, nullable=true)
-     */
-    private $spotLocation;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
@@ -150,18 +160,6 @@ class Waybill
         return $this;
     }
 
-    public function getLengthCapacity(): ?string
-    {
-        return $this->lengthCapacity;
-    }
-
-    public function setLengthCapacity(?string $lengthCapacity): self
-    {
-        $this->lengthCapacity = $lengthCapacity;
-
-        return $this;
-    }
-
     public function getRouteVia(): ?string
     {
         return $this->routeVia;
@@ -170,18 +168,6 @@ class Waybill
     public function setRouteVia(?string $routeVia): self
     {
         $this->routeVia = $routeVia;
-
-        return $this;
-    }
-
-    public function getSpotLocation(): ?string
-    {
-        return $this->spotLocation;
-    }
-
-    public function setSpotLocation(?string $spotLocation): self
-    {
-        $this->spotLocation = $spotLocation;
 
         return $this;
     }
@@ -208,5 +194,61 @@ class Waybill
         $this->ladingDescription = $ladingDescription;
 
         return $this;
+    }
+
+    public function getNumber(): ?int
+    {
+        return $this->number;
+    }
+
+    public function setNumber(int $number): self
+    {
+        $this->number = $number;
+
+        return $this;
+    }
+
+    public function getStopAt(): ?string
+    {
+        return $this->stopAt;
+    }
+
+    public function setStopAt(?string $stopAt): self
+    {
+        $this->stopAt = $stopAt;
+
+        return $this;
+    }
+
+    public function getStopAt2(): ?string
+    {
+        return $this->StopAt2;
+    }
+
+    public function setStopAt2(?string $StopAt2): self
+    {
+        $this->StopAt2 = $StopAt2;
+
+        return $this;
+    }
+
+    public function getInstructionsExceptions(): ?string
+    {
+        return $this->instructionsExceptions;
+    }
+
+    public function setInstructionsExceptions(?string $instructionsExceptions): self
+    {
+        $this->instructionsExceptions = $instructionsExceptions;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt(): \DateTime
+    {
+        return $this->updatedAt;
     }
 }

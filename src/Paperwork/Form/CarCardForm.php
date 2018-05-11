@@ -35,7 +35,7 @@ class CarCardForm implements FormInterface
         $description = Data::createAtFieldsRight($aar, static::WIDTH/2, static::BASE_FIELD_HEIGHT);
 
         $this->dataFields = [
-            new DataField($carCard->getCarInitial(), $carInitial),
+            new DataField($carCard->getReportingMark(), $carInitial),
             new DataField($carCard->getCarNumber(), $carNumber),
             new DataField($carCard->getAarType(), $aar),
             new DataField($carCard->getLengthCapacity(), $length),

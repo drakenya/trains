@@ -20,7 +20,7 @@ class CarCard
     /**
      * @ORM\Column(type="string", length=6)
      */
-    private $carInitial;
+    private $reportingMark;
 
     /**
      * @ORM\Column(type="string", length=10)
@@ -65,14 +65,14 @@ class CarCard
         return $this->id;
     }
 
-    public function getCarInitial(): ?string
+    public function getReportingMark(): ?string
     {
-        return $this->carInitial;
+        return $this->reportingMark;
     }
 
-    public function setCarInitial(string $carInitial): self
+    public function setReportingMark(string $reportingMark): self
     {
-        $this->carInitial = $carInitial;
+        $this->reportingMark = $reportingMark;
 
         return $this;
     }
