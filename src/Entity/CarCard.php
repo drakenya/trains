@@ -125,6 +125,16 @@ class CarCard
         return $this;
     }
 
+    public function getCreatedAt(): ?\DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): ?\DateTime
+    {
+        return $this->updatedAt;
+    }
+
     public function __toString(): string
     {
         return sprintf('%s %s (%s)', $this->reportingMark, $this->carNumber, $this->aarType);

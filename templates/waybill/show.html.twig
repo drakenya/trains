@@ -12,6 +12,10 @@
                 <td>{{ waybill.id }}</td>
             </tr>
             <tr>
+                <th>Number</th>
+                <td>{{ waybill.number }}</td>
+            </tr>
+            <tr>
                 <th>FromAddress</th>
                 <td>{{ waybill.fromAddress }}</td>
             </tr>
@@ -28,20 +32,24 @@
                 <td>{{ waybill.consignee }}</td>
             </tr>
             <tr>
+                <th>StopAt</th>
+                <td>{{ waybill.stopAt }}</td>
+            </tr>
+            <tr>
+                <th>StopAt2</th>
+                <td>{{ waybill.StopAt2 }}</td>
+            </tr>
+            <tr>
                 <th>AarClass</th>
                 <td>{{ waybill.aarClass }}</td>
             </tr>
             <tr>
-                <th>LengthCapacity</th>
-                <td>{{ waybill.lengthCapacity }}</td>
+                <th>InstructionsExceptions</th>
+                <td>{{ waybill.instructionsExceptions }}</td>
             </tr>
             <tr>
                 <th>RouteVia</th>
                 <td>{{ waybill.routeVia }}</td>
-            </tr>
-            <tr>
-                <th>SpotLocation</th>
-                <td>{{ waybill.spotLocation }}</td>
             </tr>
             <tr>
                 <th>LadingQuantity</th>
@@ -50,6 +58,14 @@
             <tr>
                 <th>LadingDescription</th>
                 <td>{{ waybill.ladingDescription }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ waybill.createdAt ? waybill.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ waybill.updatedAt ? waybill.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
     </table>

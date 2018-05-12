@@ -95,6 +95,11 @@ class Waybill
      */
     private $updatedAt;
 
+    public function __construct()
+    {
+        $this->number = rand(10000, 99999);
+    }
+
     public function getId()
     {
         return $this->id;
@@ -244,7 +249,12 @@ class Waybill
         return $this;
     }
 
-    public function getUpdatedAt(): \DateTime
+    public function getCreatedAt(): ?\DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }

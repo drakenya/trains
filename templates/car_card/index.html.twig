@@ -9,11 +9,13 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>CarInitial</th>
+                <th>ReportingMark</th>
                 <th>CarNumber</th>
                 <th>AarType</th>
                 <th>LengthCapacity</th>
                 <th>Description</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -21,11 +23,13 @@
         {% for car_card in car_cards %}
             <tr>
                 <td>{{ car_card.id }}</td>
-                <td>{{ car_card.carInitial }}</td>
+                <td>{{ car_card.reportingMark }}</td>
                 <td>{{ car_card.carNumber }}</td>
                 <td>{{ car_card.aarType }}</td>
                 <td>{{ car_card.lengthCapacity }}</td>
                 <td>{{ car_card.description }}</td>
+                <td>{{ car_card.createdAt ? car_card.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ car_card.updatedAt ? car_card.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('car_card_show', {'id': car_card.id}) }}">show</a>
                     <a href="{{ path('car_card_edit', {'id': car_card.id}) }}">edit</a>
@@ -33,7 +37,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="7">no records found</td>
+                <td colspan="9">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

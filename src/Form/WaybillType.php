@@ -12,14 +12,16 @@ class WaybillType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('number')
             ->add('fromAddress')
             ->add('toAddress')
             ->add('shipper')
             ->add('consignee')
+            ->add('stopAt')
+            ->add('StopAt2')
             ->add('aarClass')
-            ->add('lengthCapacity')
+            ->add('instructionsExceptions')
             ->add('routeVia')
-            ->add('spotLocation')
             ->add('ladingQuantity')
             ->add('ladingDescription')
         ;

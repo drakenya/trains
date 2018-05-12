@@ -12,8 +12,8 @@
                 <td>{{ car_card.id }}</td>
             </tr>
             <tr>
-                <th>CarInitial</th>
-                <td>{{ car_card.carInitial }}</td>
+                <th>ReportingMark</th>
+                <td>{{ car_card.reportingMark }}</td>
             </tr>
             <tr>
                 <th>CarNumber</th>
@@ -30,6 +30,14 @@
             <tr>
                 <th>Description</th>
                 <td>{{ car_card.description }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ car_card.createdAt ? car_card.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ car_card.updatedAt ? car_card.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
     </table>

@@ -12,7 +12,7 @@ class CarCardType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('carInitial')
+            ->add('reportingMark')
             ->add('carNumber')
             ->add('aarType')
             ->add('lengthCapacity')
