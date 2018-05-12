@@ -124,4 +124,9 @@ class CarCard
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return sprintf('%s %s (%s)', $this->reportingMark, $this->carNumber, $this->aarType);
+    }
 }

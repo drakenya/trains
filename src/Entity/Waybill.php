@@ -244,11 +244,13 @@ class Waybill
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
+    }
+
+    public function __toString(): string
+    {
+        return sprintf('%s %s -> %s (%s)', $this->aarClass, $this->fromAddress, $this->toAddress, $this->ladingDescription);
     }
 }

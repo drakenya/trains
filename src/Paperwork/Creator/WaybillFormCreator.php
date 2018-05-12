@@ -9,6 +9,7 @@
 namespace App\Paperwork\Creator;
 
 
+use App\Entity\CarCardAndWaybill;
 use App\Entity\Waybill;
 use App\Paperwork\DataField;
 use App\Paperwork\Field\BaseField;
@@ -82,35 +83,35 @@ class WaybillFormCreator
 
     /**
      * @param string  $key
-     * @param Waybill $waybill
+     * @param CarCardAndWaybill $waybill
      *
      * @return null|string
      */
-    private function getValueByKey(string $key, Waybill $waybill): ?string
+    private function getValueByKey(string $key, CarCardAndWaybill $waybill): ?string
     {
         if (isset($this->headerLabels[$key])) {
             return $this->headerLabels[$key];
         }
 
         switch ($key) {
-            case 'aarData': return 'XM';
-            case 'carInitialData': return 'PRR';
-            case 'carNumberData': return '123456';
-            case 'consigneeData': return $waybill->getConsignee();
-            case 'descriptionData': return $waybill->getLadingDescription();
-            case 'fromData': return $waybill->getFromAddress();
-            case 'instructionsAndExceptionsData': return $waybill->getInstructionsExceptions();
-            case 'lenData': return '50';
+            case 'aarData': return $waybill->getCarCard()->getAarType();
+            case 'carInitialData': return $waybill->getCarCard()->getReportingMark();
+            case 'carNumberData': return $waybill->getCarCard()->getCarNumber();
+            case 'consigneeData': return $waybill->getWaybill()->getConsignee();
+            case 'descriptionData': return $waybill->getWaybill()->getLadingDescription();
+            case 'fromData': return $waybill->getWaybill()->getFromAddress();
+            case 'instructionsAndExceptionsData': return $waybill->getWaybill()->getInstructionsExceptions();
+            case 'lenData': return $waybill->getCarCard()->getLengthCapacity();
             case 'marginLeft': return null;
             case 'marginRight': return null;
-            case 'pkgsData': return $waybill->getLadingQuantity();
-            case 'routeViaData': return $waybill->getRouteVia();
-            case 'shipperData': return $waybill->getShipper();
-            case 'stopThisCarAt2Data': return null;
-            case 'stopThisCarAtData': return $waybill->getStopAt();
-            case 'toData': return $waybill->getToAddress();
-            case 'waybillDateData': return $waybill->getUpdatedAt()->format('m/d/y');
-            case 'waybillNumberData': return $waybill->getNumber();
+            case 'pkgsData': return $waybill->getWaybill()->getLadingQuantity();
+            case 'routeViaData': return $waybill->getWaybill()->getRouteVia();
+            case 'shipperData': return $waybill->getWaybill()->getShipper();
+            case 'stopThisCarAt2Data': return $waybill->getWaybill()->getStopAt2();
+            case 'stopThisCarAtData': return $waybill->getWaybill()->getStopAt();
+            case 'toData': return $waybill->getWaybill()->getToAddress();
+            case 'waybillDateData': return $waybill->getWaybill()->getUpdatedAt()->format('m/d/y');
+            case 'waybillNumberData': return $waybill->getWaybill()->getNumber();
         }
 
         throw new UnknownDataKeyException($key);
@@ -137,7 +138,7 @@ class WaybillFormCreator
         }
     }
 
-    public function create(Waybill $waybill): WaybillForm
+    public function create(CarCardAndWaybill $waybill): WaybillForm
     {
         if (empty($this->fields)) {
             $this->loadFields();

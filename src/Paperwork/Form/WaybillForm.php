@@ -9,6 +9,7 @@
 namespace App\Paperwork\Form;
 
 
+use App\Entity\CarCardAndWaybill;
 use App\Entity\Waybill;
 use App\Paperwork\DataField;
 use App\Paperwork\Field\Data;
@@ -28,7 +29,7 @@ class WaybillForm extends BaseForm
     /** @var LineInterface[] */
     private $lines = [];
     
-    public function __construct(array $fields, array $lines, Waybill $waybill)
+    public function __construct(array $fields, array $lines, CarCardAndWaybill $waybill)
     {
         $this->fields = $fields;
         $this->lines = $lines;

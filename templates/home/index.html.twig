@@ -9,17 +9,9 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>src/Controller/HomeController.php</code></li>
-        <li>Your template at <code>templates/home/index.html.twig</code></li>
-    </ul>
-
     Forms:
     <ul>
-        <li><a href="{{ url('waybill_form_print') }}">Waybills</a></li>
+        <li><a href="{{ url('full_waybill_form_print') }}">Full Waybills</a></li>
         <li><a href="{{ url('car_card_form_print') }}">Car Cards</a></li>
     </ul>
 
@@ -27,6 +19,7 @@
     <ul>
         <li><a href="{{ url('waybill_index') }}">Waybills</a></li>
         <li><a href="{{ url('car_card_index') }}">Car Cards</a></li>
+        <li><a href="{{ url('car_card_and_waybill_index') }}">Car Cards &amp; Waybills</a></li>
         <li><a href="{{ url('legacy_industry_index') }}">Legacy Industries</a></li>
     </ul>
 </div>

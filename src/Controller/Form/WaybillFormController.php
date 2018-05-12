@@ -2,9 +2,11 @@
 
 namespace App\Controller\Form;
 
+use App\Entity\CarCardAndWaybill;
 use App\Entity\Waybill;
 use App\Paperwork\Creator\WaybillFormCreator;
 use App\Paperwork\Form\WaybillForm;
+use App\Repository\CarCardAndWaybillRepository;
 use App\Repository\WaybillRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,31 +18,33 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 class WaybillFormController extends Controller
 {
+    private $carCardAndWaybillRepository;
     private $waybillRepository;
     private $creator;
 
-    public function __construct(WaybillFormCreator $creator, WaybillRepository $waybillRepository)
+    public function __construct(WaybillFormCreator $creator, CarCardAndWaybillRepository $carCardAndWaybillRepository, WaybillRepository $waybillRepository)
     {
+        $this->carCardAndWaybillRepository = $carCardAndWaybillRepository;
         $this->creator = $creator;
         $this->waybillRepository = $waybillRepository;
     }
 
     /**
-     * @Route("/", name="waybill_form_print")
+     * @Route("/full", name="full_waybill_form_print")
      *
      * @param Request $request
      *
      * @return Response
      */
-    public function waybill(Request $request): Response
+    public function fullWaybill(Request $request): Response
     {
         if ($request->get('waybills')) {
-            $waybills = $this->waybillRepository->findBy(['id' => explode(',', $request->get('waybills'))]);
+            $waybills = $this->carCardAndWaybillRepository->findBy(['id' => explode(',', $request->get('waybills'))]);
         } else {
-            $waybills = $this->waybillRepository->findAll();
+            $waybills = $this->carCardAndWaybillRepository->findAll();
         }
 
-        $waybillForms = array_map(function (Waybill $waybill) {
+        $waybillForms = array_map(function (CarCardAndWaybill $waybill) {
             return $this->creator->create($waybill);
         }, $waybills);
 

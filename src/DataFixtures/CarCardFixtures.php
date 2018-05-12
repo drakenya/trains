@@ -15,7 +15,8 @@ use Faker\Factory;
 
 class CarCardFixtures extends Fixture
 {
-    private const FIXTURES_TO_GENERATE = 43;
+    public const CAR_CARD_REFERENCE = 'car-card';
+    public const FIXTURES_TO_GENERATE = 43;
 
     public function load(ObjectManager $manager)
     {
@@ -30,6 +31,8 @@ class CarCardFixtures extends Fixture
                 ->setDescription($faker->optional(0.25)->words(2, true))
             ;
             $manager->persist($carCard);
+
+            $this->addReference(sprintf('%s-%s', static::CAR_CARD_REFERENCE, ($i + 1)), $carCard);
         }
 
         $manager->flush();

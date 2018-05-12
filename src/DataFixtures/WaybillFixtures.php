@@ -15,7 +15,8 @@ use Faker\Factory;
 
 class WaybillFixtures extends Fixture
 {
-    private const FIXTURES_TO_GENERATE = 13;
+    public const WAYBILL_REFERENCE = 'waybill';
+    public const FIXTURES_TO_GENERATE = 13;
 
     public function load(ObjectManager $manager)
     {
@@ -36,6 +37,8 @@ class WaybillFixtures extends Fixture
                 ->setInstructionsExceptions($faker->optional(0.25)->words(3, true))
             ;
             $manager->persist($waybill);
+
+            $this->addReference(sprintf('%s-%s', static::WAYBILL_REFERENCE, ($i + 1)), $waybill);
         }
 
         $manager->flush();
