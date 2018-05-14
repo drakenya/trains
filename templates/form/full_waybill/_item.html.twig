@@ -4,8 +4,12 @@
                     left: {{ field.field.left / constant('App\\Paperwork\\Form\\BaseForm::WIDTH') * 100 }}%;
                     height: {{ field.field.height / constant('App\\Paperwork\\Form\\BaseForm::HEIGHT') * 100 }}%;
                     width: {{ field.field.width / constant('App\\Paperwork\\Form\\BaseForm::WIDTH') * 100 }}%;"
-            class="{{ field.field|class_for_field }}">
-        {{ field.data|field_label_for_print }}
+            class="{{ field.field.id }} {{ field.field|class_for_field }}">
+        {% if field.field.id in ['stopThisCarAtData', 'stopThisCarAt2Data'] %}
+            {{ field.data }}
+        {% else %}
+            {{ field.data|field_label_for_print }}
+        {% endif %}
     </div>
 {% endfor %}
 {% for line in form.lines if line.type == constant('App\\Paperwork\\Line\\LineTypes::VERTICAL') %}

@@ -50,10 +50,11 @@ class WaybillFormController extends Controller
 
         if ($this->container->has('profiler'))
         {
-            $this->container->get('profiler')->disable();
+//            $this->container->get('profiler')->disable();
         }
+        dump($waybillForms[0]);
 
-        return $this->render('pdf/template.html.twig', [
+        return $this->render('form/full_waybill/template.html.twig', [
             'forms' => $waybillForms,
             'isWebRequest' => (bool) !$request->get('preview'),
         ]);

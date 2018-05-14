@@ -59,8 +59,7 @@ class PaperworkExtension extends AbstractExtension
         }
 
         $data = strtoupper($data);
-        $data = str_replace('1', 'l', $data);
-        $data = str_replace('0', 'O', $data);
+        $data = str_replace(['1', '0'], ['l', 'O'], $data);
 
         return $data;
     }

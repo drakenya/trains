@@ -106,10 +106,10 @@ services:
                 - { id: stopThisCarAtData, type: data, position: right, reference: stopThisCarAt,  width: '@=1/4', height: '@=1/3' }
                 - { id: stopThisCarAt2, type: header, position: bottom, reference: stopThisCarAt, width: '@=1/4', height: '@=1/3' }
                 - { id: stopThisCarAt2Data, type: data, position: right, reference: stopThisCarAt2, width: '@=1/4', height: '@=1/3'}
-                - { id: waybillDate, type: header, position: right, reference: stopThisCarAtData, width: '@=1/4', height: '@=1/3' }
-                - { id: waybillDateData, type: data, position: right, reference: waybillDate,  width: '@=1/4', height: '@=1/3' }
-                - { id: waybillNumber, type: header, position: bottom, reference: waybillDate, width: '@=1/4', height: '@=1/3' }
-                - { id: waybillNumberData, type: data, position: right, reference: waybillNumber, width: '@=1/4', height: '@=1/3'}
+                - { id: waybillDate, type: header, position: right, reference: stopThisCarAtData, width: '@=3/16', height: '@=1/3' }
+                - { id: waybillDateData, type: data, position: right, reference: waybillDate,  width: '@=5/16', height: '@=1/3' }
+                - { id: waybillNumber, type: header, position: bottom, reference: waybillDate, width: '@=3/16', height: '@=1/3' }
+                - { id: waybillNumberData, type: data, position: right, reference: waybillNumber, width: '@=5/16', height: '@=1/3'}
                 - { id: to, type: header, position: bottom, reference: stopThisCarAt2, width: '@=1/2', height: '@=1/6' }
                 - { id: toData, type: data, position: bottom, reference: to,  width: '@=1/2', height: '@=5/6' }
                 - { id: from, type: header, position: right, reference: to, width: '@=1/2', height: '@=1/6' }

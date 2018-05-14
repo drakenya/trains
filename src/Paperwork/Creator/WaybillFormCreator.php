@@ -59,6 +59,7 @@ class WaybillFormCreator
         switch ($fieldData->getPosition()) {
             case 'origin':
                 return new $class(
+                    $fieldData->getId(),
                     0,
                     0,
                     WaybillForm::WIDTH * $fieldData->getWidth(),
@@ -67,12 +68,14 @@ class WaybillFormCreator
             case 'right':
                 return $class::createAtFieldsRight(
                     $fields[$fieldData->getReference()],
+                    $fieldData->getId(),
                     WaybillForm::WIDTH * $fieldData->getWidth(),
                     WaybillForm::BASE_FIELD_HEIGHT * $fieldData->getHeight()
                 );
             case 'bottom':
                 return $class::createAtFieldsBottom(
                     $fields[$fieldData->getReference()],
+                    $fieldData->getId(),
                     WaybillForm::WIDTH * $fieldData->getWidth(),
                     WaybillForm::BASE_FIELD_HEIGHT * $fieldData->getHeight()
                 );
