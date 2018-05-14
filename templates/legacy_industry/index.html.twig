@@ -7,21 +7,40 @@
 
     <div id="legacy-industry-list">
         <section>
-            <div>
-                <b-field label="Search ...">
-                    <b-input v-model="searchQuery.name" placeholder="Company Name"></b-input>
-                    <b-input v-model="searchQuery.location" placeholder="Location"></b-input>
-                    <b-input v-model="searchQuery.reportingMarks" placeholder="Reporting Marks"></b-input>
-                    <b-select v-model="searchQuery.shipReceive" placeholder="Ship / Receive">
-                        <option value="">All</option>
-                        <option value="S">S</option>
-                        <option value="R">R</option>
-                        <option value="R/S">S/R</option>
-                        <option value="T">T</option>
-                    </b-select>
-                    <b-input v-model="searchQuery.commodity" placeholder="Commodity"></b-input>
-                </b-field>
-            </div>
+            <b-collapse :open="false">
+                <button class="button is-primary" slot="trigger">Filters</button>
+                <div class="notification">
+                    <div class="content">
+                        <div>
+                            <b-field>
+                                <b-input v-model="searchQuery.name" placeholder="Company Name"></b-input>
+                            </b-field>
+                            <b-field>
+                                <b-input v-model="searchQuery.city" placeholder="City"></b-input>
+                            </b-field>
+                            <b-field>
+                                <b-input v-model="searchQuery.state" placeholder="State"></b-input>
+                            </b-field>
+                            <b-field>
+                                <b-input v-model="searchQuery.reportingMarks" placeholder="Reporting Marks"></b-input>
+                            </b-field>
+                            <b-field>
+                                <b-select v-model="searchQuery.shipReceive" placeholder="Ship / Receive">
+                                    <option value="">All</option>
+                                    <option value="S">S</option>
+                                    <option value="R">R</option>
+                                    <option value="R/S">S/R</option>
+                                    <option value="T">T</option>
+                                </b-select>
+                            </b-field>
+                            <b-field>
+                                <b-input v-model="searchQuery.commodity" placeholder="Commodity"></b-input>
+                            </b-field>
+                        </div>
+                    </div>
+                </div>
+            </b-collapse>
+
             <b-table
                 :data="data"
                 :loading="loading"
@@ -105,7 +124,8 @@
                     perPage: 100,
                     searchQuery: {
                         name: '',
-                        location: '',
+                        city: '',
+                        state: '',
                         reportingMarks: '',
                         shipReceive: '',
                         commodity: ''
@@ -128,7 +148,8 @@
                         'page=' + this.page,
                         'limit=' + this.perPage,
                         'query[name]=' + this.searchQuery.name,
-                        'query[location]=' + this.searchQuery.location,
+                        'query[city]=' + this.searchQuery.city,
+                        'query[state]=' + this.searchQuery.state,
                         'query[reportingMarks]=' + encodeURIComponent(this.searchQuery.reportingMarks),
                         'query[shipReceive]=' + this.searchQuery.shipReceive,
                         'query[commodity]=' + this.searchQuery.commodity,
