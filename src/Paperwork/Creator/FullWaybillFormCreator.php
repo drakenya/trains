@@ -10,7 +10,6 @@ namespace App\Paperwork\Creator;
 
 
 use App\Entity\CarCardAndWaybill;
-use App\Entity\Waybill;
 use App\Paperwork\DataField;
 use App\Paperwork\Field\BaseField;
 use App\Paperwork\Field\Data;
@@ -20,9 +19,10 @@ use App\Paperwork\Field\Header;
 use App\Paperwork\Form\WaybillForm;
 use App\Paperwork\Line\HorizontalLine;
 use App\Paperwork\Line\VerticalLine;
+use App\Paperwork\Page\WaybillPage;
 use JMS\Serializer\SerializerInterface;
 
-class WaybillFormCreator
+class FullWaybillFormCreator
 {
     /** @var FieldSpecification[] */
     private $fieldData;
@@ -62,21 +62,21 @@ class WaybillFormCreator
                     $fieldData->getId(),
                     0,
                     0,
-                    WaybillForm::WIDTH * $fieldData->getWidth(),
+                    (new WaybillPage())->getItemWidth() * $fieldData->getWidth(),
                     WaybillForm::BASE_FIELD_HEIGHT * $fieldData->getHeight()
                 );
             case 'right':
                 return $class::createAtFieldsRight(
                     $fields[$fieldData->getReference()],
                     $fieldData->getId(),
-                    WaybillForm::WIDTH * $fieldData->getWidth(),
+                    (new WaybillPage())->getItemWidth() * $fieldData->getWidth(),
                     WaybillForm::BASE_FIELD_HEIGHT * $fieldData->getHeight()
                 );
             case 'bottom':
                 return $class::createAtFieldsBottom(
                     $fields[$fieldData->getReference()],
                     $fieldData->getId(),
-                    WaybillForm::WIDTH * $fieldData->getWidth(),
+                    (new WaybillPage())->getItemWidth() * $fieldData->getWidth(),
                     WaybillForm::BASE_FIELD_HEIGHT * $fieldData->getHeight()
                 );
         }

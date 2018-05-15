@@ -10,17 +10,10 @@ namespace App\Paperwork\Form;
 
 
 use App\Entity\CarCardAndWaybill;
-use App\Entity\Waybill;
-use App\Paperwork\DataField;
-use App\Paperwork\Field\Data;
 use App\Paperwork\Field\FieldInterface;
-use App\Paperwork\Field\FormType;
-use App\Paperwork\Field\Header;
-use App\Paperwork\Line\HorizontalLine;
 use App\Paperwork\Line\LineInterface;
-use App\Paperwork\Line\VerticalLine;
 
-class WaybillForm extends BaseForm
+class WaybillForm
 {
     public const BASE_FIELD_HEIGHT = 0.5;
 

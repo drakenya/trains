@@ -122,24 +122,24 @@
     </style>
 </head>
 <body>
-{% for formPage in 0..(forms|length / (page.pageRows * page.pageColumns))|round(0, 'floor') %}
+{% for page in 0..(forms|length / (constant('App\\Paperwork\\Page\\Letter::ROWS') * constant('App\\Paperwork\\Page\\Letter::COLUMNS')))|round(0, 'floor') %}
 <div style="position:relative; width: 8.5in; height: 11in; padding: .25in .5in .25in .5in;">
     <div style="position: relative; width: 100%; height: 100%">
         {% set left = 0 %}
-        {% for column in 0 .. page.pageColumns-1 %}
+        {% for column in 0..constant('App\\Paperwork\\Page\\Letter::COLUMNS')-1 %}
             {% set top = 0 %}
 
-            {% for row in 0 .. page.pageRows-1 %}
-                {% if forms[formPage * (page.pageRows * page.pageColumns) + (row + column * page.pageColumns)] is defined %}
-                    <div style="top: {{ column / page.pageColumns * 100 }}%; left: {{ row / page.pageRows * 100 }}%; height: {{ 1 / page.pageRows * 100 }}%; width: {{ 1 / page.pageColumns * 100 }}%; position: absolute;">
-                        {% include 'form/full_waybill/_item.html.twig' with { page: page, form: forms[formPage * (page.pageRows * page.pageColumns) + (row + column * page.pageColumns)] }%}
+            {% for row in 0..constant('App\\Paperwork\\Page\\Letter::ROWS')-1 %}
+                {% if forms[page * (constant('App\\Paperwork\\Page\\Letter::ROWS') * constant('App\\Paperwork\\Page\\Letter::COLUMNS')) + (row + column * constant('App\\Paperwork\\Page\\Letter::COLUMNS'))] is defined %}
+                    <div style="top: {{ column / constant('App\\Paperwork\\Page\\Letter::COLUMNS') * 100 }}%; left: {{ row / constant('App\\Paperwork\\Page\\Letter::ROWS') * 100 }}%; height: {{ 1 / constant('App\\Paperwork\\Page\\Letter::ROWS') * 100 }}%; width: {{ 1 / constant('App\\Paperwork\\Page\\Letter::COLUMNS') * 100 }}%; position: absolute;">
+                        {% include 'form/full_waybill/_item.html.twig' with { 'form': forms[page * (constant('App\\Paperwork\\Page\\Letter::ROWS') * constant('App\\Paperwork\\Page\\Letter::COLUMNS')) + (row + column * constant('App\\Paperwork\\Page\\Letter::COLUMNS'))] }%}
                     </div>
                 {% endif %}
 
-                {% set top = top + page.pageHeight %}
+                {% set top = top + constant('App\\Paperwork\\Form\\BaseForm::HEIGHT') %}
             {% endfor %}
 
-            {% set left = left + page.pageWidth %}
+            {% set left = left + constant('App\\Paperwork\\Form\\BaseForm::WIDTH') %}
         {% endfor %}
     </div>
 </div>

@@ -88,7 +88,7 @@ services:
         tags:
             - { name: monolog.logger, channel: legacy_industry_cleaner }
 
-    App\Paperwork\Creator\WaybillFormCreator:
+    App\Paperwork\Creator\FullWaybillFormCreator:
         arguments:
             $fieldData:
                 - { id: formHeader, type: formHeader, position: origin, width: 1, height: 1 }
