@@ -20,6 +20,8 @@
                 </div>
             </b-collapse>
 
+            <button class="button" v-on:click="print">Print ({% verbatim %}{{ checkedRows.length }}{% endverbatim %})</button>
+
             <b-table
                     :data="data"
                     :loading="loading"
@@ -36,6 +38,9 @@
                     :default-sort-direction="defaultSortOrder"
                     :default-sort="[sortField, sortOrder]"
                     @sort="onSort"
+
+                    :checked-rows.sync="checkedRows"
+                    checkable
             >
                 <template slot-scope="props">
                     <b-table-column field="from" label="From" sortable>
@@ -106,6 +111,9 @@
                 }
             },
             methods: {
+                print: function (event) {
+                    window.location.href = "{{ url('short_waybill_form_print') }}?waybills=" + this.checkedRows.map(x => x.id).sort();
+                },
                 loadAsyncData: _.debounce(function() {
                     const params = [
                         'orderBy=' + this.sortField,

@@ -9,7 +9,6 @@
 namespace App\Paperwork\Form;
 
 
-use App\Entity\CarCardAndWaybill;
 use App\Paperwork\Field\FieldInterface;
 use App\Paperwork\Line\LineInterface;
 
@@ -22,7 +21,7 @@ class WaybillForm
     /** @var LineInterface[] */
     private $lines = [];
     
-    public function __construct(array $fields, array $lines, CarCardAndWaybill $waybill)
+    public function __construct(array $fields, array $lines)
     {
         $this->fields = $fields;
         $this->lines = $lines;

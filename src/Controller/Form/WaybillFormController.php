@@ -3,8 +3,11 @@
 namespace App\Controller\Form;
 
 use App\Entity\CarCardAndWaybill;
+use App\Entity\Waybill;
 use App\Paperwork\Creator\FullWaybillFormCreator;
-use App\Paperwork\Page\WaybillPage;
+use App\Paperwork\Creator\ShortWaybillFormCreator;
+use App\Paperwork\Page\ShortWaybillPage;
+use App\Paperwork\Page\FullWaybillPage;
 use App\Repository\CarCardAndWaybillRepository;
 use App\Repository\WaybillRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,12 +22,19 @@ class WaybillFormController extends Controller
 {
     private $carCardAndWaybillRepository;
     private $waybillRepository;
-    private $creator;
+    private $fullCreator;
+    private $shortCreator;
 
-    public function __construct(FullWaybillFormCreator $creator, CarCardAndWaybillRepository $carCardAndWaybillRepository, WaybillRepository $waybillRepository)
+    public function __construct(
+        FullWaybillFormCreator $fullCreator,
+        ShortWaybillFormCreator $shortCreator,
+        CarCardAndWaybillRepository $carCardAndWaybillRepository,
+        WaybillRepository $waybillRepository
+    )
     {
         $this->carCardAndWaybillRepository = $carCardAndWaybillRepository;
-        $this->creator = $creator;
+        $this->fullCreator = $fullCreator;
+        $this->shortCreator = $shortCreator;
         $this->waybillRepository = $waybillRepository;
     }
 
@@ -44,11 +54,11 @@ class WaybillFormController extends Controller
         }
 
         $waybillForms = array_map(function (CarCardAndWaybill $waybill) {
-            return $this->creator->create($waybill);
+            return $this->fullCreator->create($waybill);
         }, $waybills);
 
-        return $this->render('form/full_waybill/template.html.twig', [
-            'page' => new WaybillPage(),
+        return $this->render('form/waybill/template.html.twig', [
+            'page' => new FullWaybillPage(),
             'forms' => $waybillForms,
             'isWebRequest' => (bool) !$request->get('preview'),
         ]);
@@ -64,16 +74,17 @@ class WaybillFormController extends Controller
     public function shortWaybill(Request $request): Response
     {
         if ($request->get('waybills')) {
-            $waybills = $this->carCardAndWaybillRepository->findBy(['id' => explode(',', $request->get('waybills'))]);
+            $waybills = $this->waybillRepository->findBy(['id' => explode(',', $request->get('waybills'))]);
         } else {
-            $waybills = $this->carCardAndWaybillRepository->findAll();
+            $waybills = $this->waybillRepository->findAll();
         }
 
-        $waybillForms = array_map(function (CarCardAndWaybill $waybill) {
-            return $this->creator->create($waybill);
+        $waybillForms = array_map(function (Waybill $waybill) {
+            return $this->shortCreator->create($waybill);
         }, $waybills);
 
-        return $this->render('form/short_waybill/template.html.twig', [
+        return $this->render('form/waybill/template.html.twig', [
+            'page' => new ShortWaybillPage(),
             'forms' => $waybillForms,
             'isWebRequest' => (bool) !$request->get('preview'),
         ]);
