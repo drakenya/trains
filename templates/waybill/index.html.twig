@@ -5,57 +5,160 @@
 {% block body %}
     <h1>Waybill index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Number</th>
-                <th>FromAddress</th>
-                <th>ToAddress</th>
-                <th>Shipper</th>
-                <th>Consignee</th>
-                <th>StopAt</th>
-                <th>StopAt2</th>
-                <th>AarClass</th>
-                <th>InstructionsExceptions</th>
-                <th>RouteVia</th>
-                <th>LadingQuantity</th>
-                <th>LadingDescription</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for waybill in waybills %}
-            <tr>
-                <td>{{ waybill.id }}</td>
-                <td>{{ waybill.number }}</td>
-                <td>{{ waybill.fromAddress }}</td>
-                <td>{{ waybill.toAddress }}</td>
-                <td>{{ waybill.shipper }}</td>
-                <td>{{ waybill.consignee }}</td>
-                <td>{{ waybill.stopAt }}</td>
-                <td>{{ waybill.StopAt2 }}</td>
-                <td>{{ waybill.aarClass }}</td>
-                <td>{{ waybill.instructionsExceptions }}</td>
-                <td>{{ waybill.routeVia }}</td>
-                <td>{{ waybill.ladingQuantity }}</td>
-                <td>{{ waybill.ladingDescription }}</td>
-                <td>{{ waybill.createdAt ? waybill.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ waybill.updatedAt ? waybill.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('waybill_show', {'id': waybill.id}) }}">show</a>
-                    <a href="{{ path('waybill_edit', {'id': waybill.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="16">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div id="waybill-list">
+        <section>
+            <b-collapse :open="false">
+                <button class="button is-primary" slot="trigger">Filters</button>
+                <div class="notification">
+                    <div class="content">
+                        <div>
+                            <b-field>
+                                <b-input v-model="searchQuery.waybill" placeholder="Waybill"></b-input>
+                            </b-field>
+                        </div>
+                    </div>
+                </div>
+            </b-collapse>
 
-    <a href="{{ path('waybill_new') }}">Create new</a>
+            <b-table
+                    :data="data"
+                    :loading="loading"
+
+                    paginated
+                    pagination-simple
+                    backend-pagination
+
+                    :total="total"
+                    :per-page="perPage"
+                    @page-change="onPageChange"
+
+                    backend-sorting
+                    :default-sort-direction="defaultSortOrder"
+                    :default-sort="[sortField, sortOrder]"
+                    @sort="onSort"
+            >
+                <template slot-scope="props">
+                    <b-table-column field="from" label="From" sortable>
+                        {% verbatim %}{{ props.row.fromAddress }} / {{ props.row.shipper }}{% endverbatim %}
+                    </b-table-column>
+                    <b-table-column field="to" label="To" sortable>
+                        {% verbatim %}{{ props.row.toAddress }} / {{ props.row.consignee }}{% endverbatim %}
+                    </b-table-column>
+                    <b-table-column field="lading" label="Lading" sortable>
+                        {% verbatim %}{{ props.row.ladingQuantity }} {{ props.row.ladingDescription }}{% endverbatim %}
+                    </b-table-column>
+                    <span class="icon is-small">
+                            <a v-bind:href="props.row.viewUrl"><i class="mdi mdi-file-find"></i></a>
+                        {% if is_granted('ROLE_ADMIN') %}<a v-bind:href="props.row.editUrl"><i class="mdi mdi-pencil"></i></a>{% endif %}
+                        </span>
+                    </b-table-column>
+                </template>
+
+                <template slot="empty">
+                    <section class="section">
+                        <div class="content has-text-grey has-text-centered">
+                            <p>No data loaded.</p>
+                        </div>
+                    </section>
+                </template>
+            </b-table>
+        </section>
+    </div>
+
+    {% if is_granted('ROLE_ADMIN') %}<a href="{{ path('waybill_new') }}"><i class="mdi mdi-plus mdi-48"></i> Add</a>{% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/buefy"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+    <script>
+        Vue.use(Buefy.default)
+    </script>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        const table = {
+            data() {
+                return {
+                    data: [],
+                    checkedRows: [],
+                    total: 0,
+                    loading: false,
+                    sortField: '',
+                    sortOrder: '',
+                    defaultSortOrder: 'asc',
+                    page: 1,
+                    perPage: 100,
+                    searchQuery: {
+                        waybill: '',
+                    }
+                }
+            },
+            watch: {
+                searchQuery: {
+                    handler () {
+                        this.loadAsyncData();
+                    },
+                    deep: true
+                }
+            },
+            methods: {
+                loadAsyncData: _.debounce(function() {
+                    const params = [
+                        'orderBy=' + this.sortField,
+                        'sortOrder=' + this.sortOrder,
+                        'page=' + this.page,
+                        'limit=' + this.perPage,
+                        'query[waybill]=' + encodeURIComponent(this.searchQuery.waybill),
+                    ].join('&');
+
+                    this.loading = true
+                    axios.get('{{ url('waybill_api_list') }}?' + params)
+                        .then(({data}) => {
+                            this.data = []
+                            let currentTotal = data.count
+                            this.total = currentTotal
+                            data.data.forEach((item) => {
+                                this.data.push(item)
+                            })
+                            this.loading = false;
+                        })
+                        .catch((error) => {
+                            this.data = []
+                            this.total = 0
+                            this.loading = false
+                            throw error
+                        })
+                }, 500),
+                onFilter() {
+                    this.loadAsyncData()
+                },
+                onPageChange(page) {
+                    this.page = page
+                    this.loadAsyncData()
+                },
+                onSort(field, order) {
+                    this.sortField = field
+                    this.sortOrder = order
+                    this.loadAsyncData()
+                }
+            },
+            filters: {
+                truncate(value, length) {
+                    return value.length > length
+                        ? value.substr(0, length) + '...'
+                        : value
+                }
+            },
+            mounted() {
+                this.loadAsyncData()
+            }
+        }
+
+        const app = new Vue(table)
+        app.$mount('#waybill-list')
+    </script>
 {% endblock %}

@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\CarCard;
 use App\Form\CarCardType;
 use App\Repository\CarCardRepository;
+use JMS\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,12 +17,46 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CarCardController extends Controller
 {
+    private $carCardRepository;
+    private $serializer;
+
+    public function __construct(CarCardRepository $carCardRepository, SerializerInterface $serializer)
+    {
+        $this->carCardRepository = $carCardRepository;
+        $this->serializer = $serializer;
+    }
+
     /**
      * @Route("/", name="car_card_index", methods="GET")
      */
-    public function index(CarCardRepository $carCardRepository): Response
+    public function index(): Response
     {
-        return $this->render('car_card/index.html.twig', ['car_cards' => $carCardRepository->findAll()]);
+        return $this->render('car_card/index.html.twig');
+    }
+
+    /**
+     * @Route("/api/list", name="car_card_api_list", methods="GET")
+     */
+    public function apiList(Request $request): JsonResponse
+    {
+        $data = $this->carCardRepository->getSelection(
+            $request->get('page'),
+            $request->get('limit'),
+            $request->get('orderBy') ?: null,
+            strtolower($request->get('sortOrder')) === 'asc',
+            $request->get('query') ?: null
+        );
+        array_walk($data, function (&$item) {
+            $item['viewUrl'] = $this->generateUrl('car_card_show', ['id' => $item['id']]);
+            $item['editUrl'] = $this->generateUrl('car_card_edit', ['id' => $item['id']]);
+        });
+
+        $responseData = [
+            'data' => $data,
+            'count' => $this->carCardRepository->getRecordCount($request->get('query') ?: null),
+        ];
+
+        return new JsonResponse($this->serializer->serialize($responseData, 'json'), 200, [], true);
     }
 
     /**

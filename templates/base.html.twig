@@ -9,11 +9,74 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+        <nav class="navbar is-transparent">
+            <div class="navbar-brand">
+                <div class="navbar-burger burger" data-target="primaryNavbar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            <div id="primaryNavbar" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="/">Home</a>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link" href="#">Forms</a>
+                        <div class="navbar-dropdown is-boxed">
+                            <a class="navbar-item" href="{{ url('full_waybill_form_print') }}">Full Waybills</a>
+                        </div>
+                    </div>
+
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link" href="#">CRUD</a>
+                        <div class="navbar-dropdown is-boxed">
+                            <a class="navbar-item" href="{{ url('car_card_index') }}">Car Cards</a>
+                            <a class="navbar-item" href="{{ url('waybill_index') }}">Waybills</a>
+                            <a class="navbar-item" href="{{ url('car_card_and_waybill_index') }}">Car Cards &amp; Waybills</a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="{{ url('legacy_industry_index') }}">Legacy Industry</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="navbar-end">
+                </div>
+            </div>
+        </nav>
+
         <section class="section">
             <div class="container">
                 {% block body %}{% endblock %}
             </div>
         </section>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+
+                // Get all "navbar-burger" elements
+                let $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+                // Check if there are any navbar burgers
+                if ($navbarBurgers.length > 0) {
+
+                    // Add a click event on each of them
+                    $navbarBurgers.forEach(function ($el) {
+                        $el.addEventListener('click', function () {
+
+                            // Get the target from the "data-target" attribute
+                            let target = $el.dataset.target;
+                            let $target = document.getElementById(target);
+
+                            // Toggle the class on both the "navbar-burger" and the "navbar-menu"
+                            $el.classList.toggle('is-active');
+                            $target.classList.toggle('is-active');
+
+                        });
+                    });
+                }
+
+            });
+        </script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

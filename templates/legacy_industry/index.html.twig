@@ -156,7 +156,7 @@
                     ].join('&');
 
                     this.loading = true
-                    axios.get('/legacy-industry/api/list?' + params)
+                    axios.get("{{ url('legacy_industry_api_list') }}?" + params)
                         .then(({data}) => {
                             this.data = []
                             let currentTotal = data.count

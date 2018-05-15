@@ -19,6 +19,51 @@ class CarCardRepository extends ServiceEntityRepository
         parent::__construct($registry, CarCard::class);
     }
 
+    public function getSelection(int $page = 1, int $limit = 10, ?string $sortBy = null, bool $ascending = true, ?array $query = null): array
+    {
+        $builder = $this->createQueryBuilder('cc')
+            ->select('cc')
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+        ;
+
+        if ($sortBy) {
+            $builder->orderBy('cc.'.$sortBy, $ascending ? 'ASC' : 'DESC');
+        } else {
+            $builder
+                ->addOrderBy('cc.carNumber', 'ASC')
+                ->addOrderBy('cc.reportingMark', 'ASC')
+            ;
+        }
+
+        if (!empty($query['carCard'])) {
+            $builder->andWhere(sprintf('cc.reportingMark like :carCard_query OR cc.carNumber like :carCard_query OR cc.aarType like :carCard_query'));
+            $builder->setParameter('carCard_query', sprintf('%%%s%%', $query['carCard']));
+        }
+
+        return $builder
+            ->getQuery()
+            ->getArrayResult()
+            ;
+    }
+
+    public function getRecordCount(?array $query = null): int
+    {
+        $builder = $this->createQueryBuilder('cc')
+            ->select('count(cc.id)')
+        ;
+
+        if (!empty($query['carCard'])) {
+            $builder->andWhere(sprintf('cc.reportingMark like :carCard_query OR cc.carNumber like :carCard_query OR cc.aarType like :carCard_query'));
+            $builder->setParameter('carCard_query', sprintf('%%%s%%', $query['carCard']));
+        }
+
+        return $builder
+            ->getQuery()
+            ->getSingleScalarResult()
+            ;
+    }
+
 //    /**
 //     * @return CarCard[] Returns an array of CarCard objects
 //     */

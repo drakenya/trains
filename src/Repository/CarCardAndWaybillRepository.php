@@ -19,6 +19,58 @@ class CarCardAndWaybillRepository extends ServiceEntityRepository
         parent::__construct($registry, CarCardAndWaybill::class);
     }
 
+    public function getSelection(int $page = 1, int $limit = 10, ?string $sortBy = null, bool $ascending = true, ?array $query = null): array
+    {
+        $builder = $this->createQueryBuilder('ccaw')
+            ->select('ccaw', 'cc', 'w')
+            ->innerJoin('ccaw.carCard', 'cc')
+            ->innerJoin('ccaw.waybill', 'w')
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+        ;
+
+        if ($sortBy) {
+            $builder->orderBy('ccaw.'.$sortBy, $ascending ? 'ASC' : 'DESC');
+        }
+
+        if (!empty($query['carCard'])) {
+            $builder->andWhere(sprintf('cc.reportingMark like :carCard_query OR cc.carNumber like :carCard_query OR cc.aarType like :carCard_query'));
+            $builder->setParameter('carCard_query', sprintf('%%%s%%', $query['carCard']));
+        }
+        if (!empty($query['waybill'])) {
+            $builder->andWhere(sprintf('w.fromAddress like :waybill_query OR w.toAddress like :waybill_query OR w.shipper like :waybill_query OR w.consignee like :waybill_query OR w.ladingDescription like :waybill_query OR w.aarClass like :waybill_query'));
+            $builder->setParameter('waybill_query', sprintf('%%%s%%', $query['waybill']));
+        }
+
+        return $builder
+            ->getQuery()
+            ->getArrayResult()
+            ;
+    }
+
+    public function getRecordCount(?array $query = null): int
+    {
+        $builder = $this->createQueryBuilder('ccaw')
+            ->select('count(ccaw.id)')
+            ->innerJoin('ccaw.carCard', 'cc')
+            ->innerJoin('ccaw.waybill', 'w')
+        ;
+
+        if (!empty($query['carCard'])) {
+            $builder->andWhere(sprintf('cc.reportingMark like :carCard_query OR cc.carNumber like :carCard_query OR cc.aarType like :carCard_query'));
+            $builder->setParameter('carCard_query', sprintf('%%%s%%', $query['carCard']));
+        }
+        if (!empty($query['waybill'])) {
+            $builder->andWhere(sprintf('w.fromAddress like :waybill_query OR w.toAddress like :waybill_query OR w.shipper like :waybill_query OR w.consignee like :waybill_query OR w.ladingDescription like :waybill_query OR w.aarClass like :waybill_query'));
+            $builder->setParameter('waybill_query', sprintf('%%%s%%', $query['waybill']));
+        }
+
+        return $builder
+            ->getQuery()
+            ->getSingleScalarResult()
+            ;
+    }
+
 //    /**
 //     * @return CarCardAndWaybill[] Returns an array of CarCardAndWaybill objects
 //     */

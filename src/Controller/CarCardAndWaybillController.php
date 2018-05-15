@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\CarCardAndWaybill;
 use App\Form\CarCardAndWaybillType;
 use App\Repository\CarCardAndWaybillRepository;
+use JMS\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,12 +17,46 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CarCardAndWaybillController extends Controller
 {
+    private $carCardAndWaybillRepository;
+    private $serializer;
+
+    public function __construct(CarCardAndWaybillRepository $carCardAndWaybillRepository, SerializerInterface $serializer)
+    {
+        $this->carCardAndWaybillRepository = $carCardAndWaybillRepository;
+        $this->serializer = $serializer;
+    }
+
     /**
      * @Route("/", name="car_card_and_waybill_index", methods="GET")
      */
-    public function index(CarCardAndWaybillRepository $carCardAndWaybillRepository): Response
+    public function index(): Response
     {
-        return $this->render('car_card_and_waybill/index.html.twig', ['car_card_and_waybills' => $carCardAndWaybillRepository->findAll()]);
+        return $this->render('car_card_and_waybill/index.html.twig');
+    }
+
+    /**
+     * @Route("/api/list", name="car_card_and_waybill_api_list", methods="GET")
+     */
+    public function apiList(Request $request): JsonResponse
+    {
+        $data = $this->carCardAndWaybillRepository->getSelection(
+            $request->get('page'),
+            $request->get('limit'),
+            $request->get('orderBy') ?: null,
+            strtolower($request->get('sortOrder')) === 'asc',
+            $request->get('query') ?: null
+        );
+        array_walk($data, function (&$item) {
+            $item['viewUrl'] = $this->generateUrl('car_card_and_waybill_show', ['id' => $item['id']]);
+            $item['editUrl'] = $this->generateUrl('car_card_and_waybill_edit', ['id' => $item['id']]);
+        });
+
+        $responseData = [
+            'data' => $data,
+            'count' => $this->carCardAndWaybillRepository->getRecordCount($request->get('query') ?: null),
+        ];
+
+        return new JsonResponse($this->serializer->serialize($responseData, 'json'), 200, [], true);
     }
 
     /**
