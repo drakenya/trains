@@ -3,14 +3,14 @@
 namespace App\Form;
 
 use App\Entity\CarCard;
-use App\Entity\CarCardAndWaybill;
+use App\Entity\FullWaybill;
 use App\Entity\Waybill;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CarCardAndWaybillType extends AbstractType
+class FullWaybillType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -48,7 +48,7 @@ class CarCardAndWaybillType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => CarCardAndWaybill::class,
+            'data_class' => FullWaybill::class,
         ]);
     }
 }

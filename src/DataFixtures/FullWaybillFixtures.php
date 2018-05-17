@@ -9,25 +9,25 @@
 namespace App\DataFixtures;
 
 use App\Entity\CarCard;
-use App\Entity\CarCardAndWaybill;
+use App\Entity\FullWaybill;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 
-class CarCardAndWaybillFixtures extends Fixture implements DependentFixtureInterface
+class FullWaybillFixtures extends Fixture implements DependentFixtureInterface
 {
     private const FIXTURES_TO_GENERATE = 13;
 
     public function load(ObjectManager $manager)
     {
         for ($i = 0; $i < static::FIXTURES_TO_GENERATE; $i++) {
-            $carCardAndWaybill = (new CarCardAndWaybill())
-                ->setCarCard($this->getReference(sprintf('%s-%s', CarCardFixtures::CAR_CARD_REFERENCE, rand(1, CarCardFixtures::FIXTURES_TO_GENERATE))))
-                ->setWaybill($this->getReference(sprintf('%s-%s', WaybillFixtures::WAYBILL_REFERENCE, rand(1, WaybillFixtures::FIXTURES_TO_GENERATE))))
+            $fullWaybill = (new FullWaybill())
+                ->setCarCard($this->getReference(sprintf('%s-%s', CarCardFixtures::REFERENCE, rand(1, CarCardFixtures::FIXTURES_TO_GENERATE))))
+                ->setWaybill($this->getReference(sprintf('%s-%s', WaybillFixtures::REFERENCE, rand(1, WaybillFixtures::FIXTURES_TO_GENERATE))))
 
             ;
-            $manager->persist($carCardAndWaybill);
+            $manager->persist($fullWaybill);
         }
 
         $manager->flush();

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit FullWaybill{% endblock %}
+
+{% block body %}
+    <h1>Edit FullWaybill</h1>
+
+    {{ include('full_waybill/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('full_waybill_index') }}">back to list</a>
+
+    {{ include('full_waybill/_delete_form.html.twig') }}
+{% endblock %}

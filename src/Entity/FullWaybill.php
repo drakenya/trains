@@ -3,11 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CarCardAndWaybillRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\FullWaybillRepository")
  */
-class CarCardAndWaybill
+class FullWaybill
 {
     /**
      * @ORM\Id()
@@ -27,6 +28,24 @@ class CarCardAndWaybill
      * @ORM\JoinColumn(nullable=false)
      */
     private $waybill;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     *
+     * @Gedmo\Timestampable(on="create")
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     *
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $updatedAt;
 
     public function getId()
     {

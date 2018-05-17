@@ -97,20 +97,28 @@ class ShortWaybillFormCreator
         }
 
         switch ($key) {
-            case 'consigneeData': return $waybill->getConsignee();
+            case 'consigneeData': return $waybill->getConsignee() ? $waybill->getConsignee()->getName() : null;
             case 'descriptionData': return $waybill->getLadingDescription();
-            case 'fromData': return $waybill->getFromAddress();
+            case 'fromData': return $waybill->getShipper() ? sprintf(
+                '%s, %s',
+                $waybill->getShipper()->getLocation()->getStationName(),
+                $waybill->getShipper()->getLocation()->getState()
+            ) : null;
             case 'instructionsAndExceptionsData': return $waybill->getInstructionsExceptions();
             case 'marginLeft': return null;
             case 'marginRight': return null;
             case 'pkgsData': return $waybill->getLadingQuantity();
             case 'routeViaData': return $waybill->getRouteVia();
-            case 'shipperData': return $waybill->getShipper();
+            case 'shipperData': return $waybill->getShipper() ? $waybill->getShipper()->getName() : null;
             case 'stopThisCarAt2Data': return $waybill->getStopAt2();
             case 'stopThisCarAtData': return $waybill->getStopAt();
-            case 'toData': return $waybill->getToAddress();
+            case 'toData': return $waybill->getConsignee() ? sprintf(
+                '%s, %s',
+                $waybill->getConsignee()->getLocation()->getStationName(),
+                $waybill->getConsignee()->getLocation()->getState()
+            ) : null;
             case 'waybillDateData': return $waybill->getUpdatedAt()->format('m/d/y');
-            case 'waybillNumberData': return $waybill->getNumber();
+            case 'waybillNumberData': return $waybill->getId();
         }
 
         throw new UnknownDataKeyException($key);

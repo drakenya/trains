@@ -38,13 +38,13 @@
                     @sort="onSort"
             >
                 <template slot-scope="props">
-                    <b-table-column field="aarType" label="AAR" sortable>
-                        {% verbatim %}{{ props.row.aarType }}{% endverbatim %}
+                    <b-table-column field="aarType" label="AAR Class" sortable>
+                        {% verbatim %}{{ props.row.aarCode.code }}{% endverbatim %}
                     </b-table-column>
-                    <b-table-column field="reportMark" label="reportingMark" sortable>
-                        {% verbatim %}{{ props.row.reportingMark }}{% endverbatim %}
+                    <b-table-column field="reportMark" label="Reporting Mark" sortable>
+                        {% verbatim %}{{ props.row.railroad.reportingMark }}{% endverbatim %}
                     </b-table-column>
-                    <b-table-column field="carNumber" label="carNumber" sortable>
+                    <b-table-column field="carNumber" label="Car #" sortable>
                         {% verbatim %}{{ props.row.carNumber }}{% endverbatim %}
                     </b-table-column>
                     <span class="icon is-small">

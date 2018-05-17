@@ -18,19 +18,9 @@ class CarCard
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=6)
-     */
-    private $reportingMark;
-
-    /**
      * @ORM\Column(type="string", length=10)
      */
     private $carNumber;
-
-    /**
-     * @ORM\Column(type="string", length=6)
-     */
-    private $aarType;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
@@ -60,21 +50,25 @@ class CarCard
      */
     private $updatedAt;
 
+    /**
+     * @var AarCode
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\AarCode", inversedBy="carCards")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $aarCode;
+
+    /**
+     * @var Railroad
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Railroad", inversedBy="carCards")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $railroad;
+
     public function getId()
     {
         return $this->id;
-    }
-
-    public function getReportingMark(): ?string
-    {
-        return $this->reportingMark;
-    }
-
-    public function setReportingMark(string $reportingMark): self
-    {
-        $this->reportingMark = $reportingMark;
-
-        return $this;
     }
 
     public function getCarNumber(): ?string
@@ -85,18 +79,6 @@ class CarCard
     public function setCarNumber(string $carNumber): self
     {
         $this->carNumber = $carNumber;
-
-        return $this;
-    }
-
-    public function getAarType(): ?string
-    {
-        return $this->aarType;
-    }
-
-    public function setAarType(string $aarType): self
-    {
-        $this->aarType = $aarType;
 
         return $this;
     }
@@ -135,8 +117,27 @@ class CarCard
         return $this->updatedAt;
     }
 
-    public function __toString(): string
+    public function getAarCode(): ?AarCode
     {
-        return sprintf('%s %s (%s)', $this->reportingMark, $this->carNumber, $this->aarType);
+        return $this->aarCode;
+    }
+
+    public function setAarCode(?AarCode $aarCode): self
+    {
+        $this->aarCode = $aarCode;
+
+        return $this;
+    }
+
+    public function getRailroad(): ?Railroad
+    {
+        return $this->railroad;
+    }
+
+    public function setRailroad(?Railroad $railroad): self
+    {
+        $this->railroad = $railroad;
+
+        return $this;
     }
 }

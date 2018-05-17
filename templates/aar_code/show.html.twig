@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AarCode{% endblock %}
+
+{% block body %}
+    <h1>AarCode</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ aar_code.id }}</td>
+            </tr>
+            <tr>
+                <th>Code</th>
+                <td>{{ aar_code.code }}</td>
+            </tr>
+            <tr>
+                <th>Class</th>
+                <td>{{ aar_code.class }}</td>
+            </tr>
+            <tr>
+                <th>CommonName</th>
+                <td>{{ aar_code.commonName }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ aar_code.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('aar_code_index') }}">back to list</a>
+
+    <a href="{{ path('aar_code_edit', {'id': aar_code.id}) }}">edit</a>
+
+    {{ include('aar_code/_delete_form.html.twig') }}
+{% endblock %}

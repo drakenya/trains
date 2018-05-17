@@ -32,9 +32,15 @@
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link" href="#">CRUD</a>
                         <div class="navbar-dropdown is-boxed">
+                            <a class="navbar-item" href="{{ url('aar_code_index') }}">AAR Codes</a>
+                            <a class="navbar-item" href="{{ url('railroad_index') }}">Railroads</a>
                             <a class="navbar-item" href="{{ url('car_card_index') }}">Car Cards</a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="{{ url('location_index') }}">Locations</a>
+                            <a class="navbar-item" href="{{ url('customer_index') }}">Customers</a>
                             <a class="navbar-item" href="{{ url('waybill_index') }}">Waybills</a>
-                            <a class="navbar-item" href="{{ url('car_card_and_waybill_index') }}">Car Cards &amp; Waybills</a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="{{ url('full_waybill_index') }}">Full Waybills</a>
                             <hr class="navbar-divider">
                             <a class="navbar-item" href="{{ url('legacy_industry_index') }}">Legacy Industry</a>
                         </div>

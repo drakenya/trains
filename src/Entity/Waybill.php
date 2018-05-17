@@ -18,31 +18,6 @@ class Waybill
     private $id;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $number;
-
-    /**
-     * @ORM\Column(type="string", length=64, nullable=true)
-     */
-    private $fromAddress;
-
-    /**
-     * @ORM\Column(type="string", length=64, nullable=true)
-     */
-    private $toAddress;
-
-    /**
-     * @ORM\Column(type="string", length=64, nullable=true)
-     */
-    private $shipper;
-
-    /**
-     * @ORM\Column(type="string", length=64, nullable=true)
-     */
-    private $consignee;
-
-    /**
      * @ORM\Column(type="string", length=64, nullable=true)
      */
     private $stopAt;
@@ -51,11 +26,6 @@ class Waybill
      * @ORM\Column(type="string", length=64, nullable=true)
      */
     private $StopAt2;
-
-    /**
-     * @ORM\Column(type="string", length=3, nullable=true)
-     */
-    private $aarClass;
 
     /**
      * @ORM\Column(type="string", length=64, nullable=true)
@@ -95,74 +65,29 @@ class Waybill
      */
     private $updatedAt;
 
-    public function __construct()
-    {
-        $this->number = rand(10000, 99999);
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\AarCode", inversedBy="waybills")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $aarCode;
+
+    /**
+     * @var Customer
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="shippers")
+     */
+    private $shipper;
+
+    /**
+     * @var Customer
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="shippers")
+     */
+    private $consignee;
 
     public function getId()
     {
         return $this->id;
-    }
-
-    public function getFromAddress(): ?string
-    {
-        return $this->fromAddress;
-    }
-
-    public function setFromAddress(?string $fromAddress): self
-    {
-        $this->fromAddress = $fromAddress;
-
-        return $this;
-    }
-
-    public function getToAddress(): ?string
-    {
-        return $this->toAddress;
-    }
-
-    public function setToAddress(?string $toAddress): self
-    {
-        $this->toAddress = $toAddress;
-
-        return $this;
-    }
-
-    public function getShipper(): ?string
-    {
-        return $this->shipper;
-    }
-
-    public function setShipper(?string $shipper): self
-    {
-        $this->shipper = $shipper;
-
-        return $this;
-    }
-
-    public function getConsignee(): ?string
-    {
-        return $this->consignee;
-    }
-
-    public function setConsignee(?string $consignee): self
-    {
-        $this->consignee = $consignee;
-
-        return $this;
-    }
-
-    public function getAarClass(): ?string
-    {
-        return $this->aarClass;
-    }
-
-    public function setAarClass(?string $aarClass): self
-    {
-        $this->aarClass = $aarClass;
-
-        return $this;
     }
 
     public function getRouteVia(): ?string
@@ -197,18 +122,6 @@ class Waybill
     public function setLadingDescription(?string $ladingDescription): self
     {
         $this->ladingDescription = $ladingDescription;
-
-        return $this;
-    }
-
-    public function getNumber(): ?int
-    {
-        return $this->number;
-    }
-
-    public function setNumber(int $number): self
-    {
-        $this->number = $number;
 
         return $this;
     }
@@ -259,8 +172,39 @@ class Waybill
         return $this->updatedAt;
     }
 
-    public function __toString(): string
+    public function getAarCode(): ?AarCode
     {
-        return sprintf('%s %s -> %s (%s)', $this->aarClass, $this->fromAddress, $this->toAddress, $this->ladingDescription);
+        return $this->aarCode;
+    }
+
+    public function setAarCode(?AarCode $aarCode): self
+    {
+        $this->aarCode = $aarCode;
+
+        return $this;
+    }
+
+    public function getShipper(): ?Customer
+    {
+        return $this->shipper;
+    }
+
+    public function setShipper(?Customer $shipper): self
+    {
+        $this->shipper = $shipper;
+
+        return $this;
+    }
+
+    public function getConsignee(): ?Customer
+    {
+        return $this->consignee;
+    }
+
+    public function setConsignee(?Customer $consignee): self
+    {
+        $this->consignee = $consignee;
+
+        return $this;
     }
 }

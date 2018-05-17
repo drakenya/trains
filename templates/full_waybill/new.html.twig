@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New FullWaybill{% endblock %}
+
+{% block body %}
+    <h1>Create new FullWaybill</h1>
+
+    {{ include('full_waybill/_form.html.twig') }}
+
+    <a href="{{ path('full_waybill_index') }}">back to list</a>
+{% endblock %}

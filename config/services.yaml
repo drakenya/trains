@@ -239,3 +239,6 @@ services:
                 instructionsAndExceptions: 'Instructions & Exceptions'
                 pkgs: '# Pkgs'
                 description: 'Description of Articles'
+
+    Faker\Generator:
+        factory: ['Faker\Factory', create]

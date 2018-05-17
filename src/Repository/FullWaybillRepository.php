@@ -2,27 +2,31 @@
 
 namespace App\Repository;
 
-use App\Entity\Waybill;
+use App\Entity\FullWaybill;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method Waybill|null find($id, $lockMode = null, $lockVersion = null)
- * @method Waybill|null findOneBy(array $criteria, array $orderBy = null)
- * @method Waybill[]    findAll()
- * @method Waybill[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method FullWaybill|null find($id, $lockMode = null, $lockVersion = null)
+ * @method FullWaybill|null findOneBy(array $criteria, array $orderBy = null)
+ * @method FullWaybill[]    findAll()
+ * @method FullWaybill[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class WaybillRepository extends ServiceEntityRepository
+class FullWaybillRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Waybill::class);
+        parent::__construct($registry, FullWaybill::class);
     }
 
     public function getSelection(int $page = 1, int $limit = 10, ?string $sortBy = null, bool $ascending = true, ?array $query = null): array
     {
-        $builder = $this->createQueryBuilder('waybill')
-            ->select('waybill', 'aarCode', 'consignee', 'consignee_location', 'shipper', 'shipper_location')
+        $builder = $this->createQueryBuilder('fullWaybill')
+            ->select('fullWaybill', 'carCard', 'carCard_aarCode', 'railroad', 'waybill', 'aarCode', 'consignee', 'consignee_location', 'shipper', 'shipper_location')
+            ->innerJoin('fullWaybill.carCard', 'carCard')
+            ->innerJoin('carCard.aarCode', 'carCard_aarCode')
+            ->innerJoin('carCard.railroad', 'railroad')
+            ->innerJoin('fullWaybill.waybill', 'waybill')
             ->leftJoin('waybill.aarCode', 'aarCode')
             ->leftJoin('waybill.consignee', 'consignee')
             ->leftJoin('consignee.location', 'consignee_location')
@@ -33,13 +37,19 @@ class WaybillRepository extends ServiceEntityRepository
         ;
 
         if ($sortBy) {
-            $builder->orderBy('w.'.$sortBy, $ascending ? 'ASC' : 'DESC');
+            $builder->orderBy('fullWaybill.'.$sortBy, $ascending ? 'ASC' : 'DESC');
         } else {
-            $builder
-                ->addOrderBy('aarCode.code', 'ASC')
-            ;
+
         }
 
+        if (!empty($query['carCard'])) {
+            $builder
+                ->orWhere('railroad.reportingMark like :carCard_query')
+                ->orWhere('carCard.carNumber like :carCard_query')
+                ->orWhere('carCard_aarCode.class like :carCard_query')
+            ;
+            $builder->setParameter('carCard_query', sprintf('%%%s%%', $query['carCard']));
+        }
         if (!empty($query['waybill'])) {
             $builder
                 ->orWhere('shipper.name like :waybill_query')
@@ -62,8 +72,12 @@ class WaybillRepository extends ServiceEntityRepository
 
     public function getRecordCount(?array $query = null): int
     {
-        $builder = $this->createQueryBuilder('waybill')
-            ->select('count(waybill.id)')
+        $builder = $this->createQueryBuilder('fullWaybill')
+            ->select('count(fullWaybill.id)')
+            ->innerJoin('fullWaybill.carCard', 'carCard')
+            ->innerJoin('carCard.aarCode', 'carCard_aarCode')
+            ->innerJoin('carCard.railroad', 'railroad')
+            ->innerJoin('fullWaybill.waybill', 'waybill')
             ->leftJoin('waybill.aarCode', 'aarCode')
             ->leftJoin('waybill.consignee', 'consignee')
             ->leftJoin('consignee.location', 'consignee_location')
@@ -71,6 +85,14 @@ class WaybillRepository extends ServiceEntityRepository
             ->leftJoin('shipper.location', 'shipper_location')
         ;
 
+        if (!empty($query['carCard'])) {
+            $builder
+                ->orWhere('railroad.reportingMark like :carCard_query')
+                ->orWhere('carCard.carNumber like :carCard_query')
+                ->orWhere('carCard_aarCode.class like :carCard_query')
+            ;
+            $builder->setParameter('carCard_query', sprintf('%%%s%%', $query['carCard']));
+        }
         if (!empty($query['waybill'])) {
             $builder
                 ->orWhere('shipper.name like :waybill_query')

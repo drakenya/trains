@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}CarCardAndWaybill index{% endblock %}
+{% block title %}FullWaybill index{% endblock %}
 
 {% block body %}
-    <h1>CarCardAndWaybill index</h1>
+    <h1>FullWaybill index</h1>
 
     <div id="car-card-and-waybill-list">
         <section>
@@ -47,10 +47,24 @@
             >
                 <template slot-scope="props">
                     <b-table-column field="carCard" label="Car Card" sortable>
-                        {% verbatim %}{{ props.row.carCard.reportingMark }} {{ props.row.carCard.carNumber }} ({{ props.row.carCard.aarType }}){% endverbatim %}
+                        {% verbatim %}
+                            {{ props.row.carCard.aarCode.code }}
+                            <br>
+                            {{ props.row.carCard.railroad.reportingMark }} {{ props.row.carCard.carNumber }}
+                        {% endverbatim %}
                     </b-table-column>
                     <b-table-column field="waybill" label="Waybill" sortable>
-                        {% verbatim %}{{ props.row.waybill.fromAddress }}/{{ props.row.waybill.shipper }} -> {{ props.row.waybill.toAddress }}/{{ props.row.waybill.consignee }} ({{ props.row.waybill.ladingDescription }}){% endverbatim %}
+                        {% verbatim %}
+                            {{ props.row.waybill.ladingQuantity }} {{ props.row.waybill.ladingDescription }}
+                            <br>
+                            <span v-if="props.row.waybill.shipper">
+                                {{ props.row.waybill.shipper.name }} / {{ props.row.waybill.shipper.location.stationName }}, {{ props.row.waybill.shipper.location.state }}
+                            </span>
+                            <br>
+                            <span v-if="props.row.waybill.consignee">
+                                {{ props.row.waybill.consignee.name }} / {{ props.row.waybill.consignee.location.stationName }}, {{ props.row.waybill.consignee.location.state }}
+                            </span>
+                        {% endverbatim %}
                     </b-table-column>
                         <span class="icon is-small">
                             <a v-bind:href="props.row.viewUrl"><i class="mdi mdi-file-find"></i></a>
@@ -70,7 +84,7 @@
         </section>
     </div>
 
-    {% if is_granted('ROLE_ADMIN') %}<a href="{{ path('car_card_and_waybill_new') }}"><i class="mdi mdi-plus mdi-48"></i> Add</a>{% endif %}
+    {% if is_granted('ROLE_ADMIN') %}<a href="{{ path('full_waybill_new') }}"><i class="mdi mdi-plus mdi-48"></i> Add</a>{% endif %}
 {% endblock %}
 
 {% block stylesheets %}
@@ -126,7 +140,7 @@
                     ].join('&');
 
                     this.loading = true
-                    axios.get('{{ url('car_card_and_waybill_api_list') }}?' + params)
+                    axios.get('{{ url('full_waybill_api_list') }}?' + params)
                         .then(({data}) => {
                             this.data = []
                             let currentTotal = data.count

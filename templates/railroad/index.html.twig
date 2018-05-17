@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Railroad index{% endblock %}
+
+{% block body %}
+    <h1>Railroad index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>ReportingMark</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for railroad in railroads %}
+            <tr>
+                <td>{{ railroad.id }}</td>
+                <td>{{ railroad.reportingMark }}</td>
+                <td>{{ railroad.name }}</td>
+                <td>
+                    <a href="{{ path('railroad_show', {'id': railroad.id}) }}">show</a>
+                    <a href="{{ path('railroad_edit', {'id': railroad.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('railroad_new') }}">Create new</a>
+{% endblock %}

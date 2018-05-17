@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block body %}
 <style>
@@ -17,9 +17,17 @@
 
     CRUD:
     <ul>
+        <li><a href="{{ url('aar_code_index') }}">AAR Codes</a></li>
+        <li><a href="{{ url('railroad_index') }}">Railroads</a></li>
         <li><a href="{{ url('waybill_index') }}">Waybills</a></li>
+    </ul>
+    <ul>
         <li><a href="{{ url('car_card_index') }}">Car Cards</a></li>
-        <li><a href="{{ url('car_card_and_waybill_index') }}">Car Cards &amp; Waybills</a></li>
+    </ul>
+    <ul>
+        <li><a href="{{ url('location_index') }}">Locations</a></li>
+        <li><a href="{{ url('customer_index') }}">Customers</a></li>
+        <li><a href="{{ url('full_waybill_index') }}">Full Waybills</a></li>
         <li><a href="{{ url('legacy_industry_index') }}">Legacy Industries</a></li>
     </ul>
 </div>

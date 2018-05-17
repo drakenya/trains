@@ -43,11 +43,22 @@
                     checkable
             >
                 <template slot-scope="props">
-                    <b-table-column field="from" label="From" sortable>
-                        {% verbatim %}{{ props.row.fromAddress }} / {{ props.row.shipper }}{% endverbatim %}
+                    <b-table-column field="aarCode" label="AAR Code" sortable>
+                        {% verbatim %}{{ props.row.aarCode.code }}{% endverbatim %}
                     </b-table-column>
-                    <b-table-column field="to" label="To" sortable>
-                        {% verbatim %}{{ props.row.toAddress }} / {{ props.row.consignee }}{% endverbatim %}
+                    <b-table-column field="from" label="Shipper" sortable>
+                        {% verbatim %}
+                            <span v-if="props.row.shipper">
+                                {{ props.row.shipper.name }}<br>{{ props.row.shipper.location.stationName }}, {{ props.row.shipper.location.state }}
+                            </span>
+                        {% endverbatim %}
+                    </b-table-column>
+                    <b-table-column field="to" label="Consignee" sortable>
+                        {% verbatim %}
+                            <span v-if="props.row.consignee">
+                                {{ props.row.consignee.name }}<br>{{ props.row.consignee.location.stationName }}, {{ props.row.consignee.location.state }}
+                            </span>
+                        {% endverbatim %}
                     </b-table-column>
                     <b-table-column field="lading" label="Lading" sortable>
                         {% verbatim %}{{ props.row.ladingQuantity }} {{ props.row.ladingDescription }}{% endverbatim %}

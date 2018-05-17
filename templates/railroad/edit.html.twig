@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Railroad{% endblock %}
+
+{% block body %}
+    <h1>Edit Railroad</h1>
+
+    {{ include('railroad/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('railroad_index') }}">back to list</a>
+
+    {{ include('railroad/_delete_form.html.twig') }}
+{% endblock %}

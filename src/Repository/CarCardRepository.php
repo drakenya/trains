@@ -22,22 +22,24 @@ class CarCardRepository extends ServiceEntityRepository
     public function getSelection(int $page = 1, int $limit = 10, ?string $sortBy = null, bool $ascending = true, ?array $query = null): array
     {
         $builder = $this->createQueryBuilder('cc')
-            ->select('cc')
+            ->select('cc', 'r', 'ac')
+            ->innerJoin('cc.railroad', 'r')
+            ->innerJoin('cc.aarCode', 'ac')
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit)
         ;
 
         if ($sortBy) {
-            $builder->orderBy('cc.'.$sortBy, $ascending ? 'ASC' : 'DESC');
+            $builder->addOrderBy('cc.'.$sortBy, $ascending ? 'ASC' : 'DESC');
         } else {
             $builder
+                ->addOrderBy('r.reportingMark', 'ASC')
                 ->addOrderBy('cc.carNumber', 'ASC')
-                ->addOrderBy('cc.reportingMark', 'ASC')
             ;
         }
 
         if (!empty($query['carCard'])) {
-            $builder->andWhere(sprintf('cc.reportingMark like :carCard_query OR cc.carNumber like :carCard_query OR cc.aarType like :carCard_query'));
+            $builder->andWhere(sprintf('r.reportingMark like :carCard_query OR cc.carNumber like :carCard_query OR ac.code like :carCard_query'));
             $builder->setParameter('carCard_query', sprintf('%%%s%%', $query['carCard']));
         }
 
@@ -51,10 +53,12 @@ class CarCardRepository extends ServiceEntityRepository
     {
         $builder = $this->createQueryBuilder('cc')
             ->select('count(cc.id)')
+            ->innerJoin('cc.railroad', 'r')
+            ->innerJoin('cc.aarCode', 'ac')
         ;
 
         if (!empty($query['carCard'])) {
-            $builder->andWhere(sprintf('cc.reportingMark like :carCard_query OR cc.carNumber like :carCard_query OR cc.aarType like :carCard_query'));
+            $builder->andWhere(sprintf('r.reportingMark like :carCard_query OR cc.carNumber like :carCard_query OR ac.code like :carCard_query'));
             $builder->setParameter('carCard_query', sprintf('%%%s%%', $query['carCard']));
         }
 
@@ -63,33 +67,4 @@ class CarCardRepository extends ServiceEntityRepository
             ->getSingleScalarResult()
             ;
     }
-
-//    /**
-//     * @return CarCard[] Returns an array of CarCard objects
-//     */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?CarCard
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
