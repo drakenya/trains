@@ -1,0 +1,191 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>EmptyCarBill index</h1>
+
+
+    <div id="empty-car-bill-list">
+        <section>
+            <b-collapse :open="false">
+                <button class="button is-primary" slot="trigger">Filters</button>
+                <div class="notification">
+                    <div class="content">
+                        <div>
+                            <b-field>
+                                <b-input v-model="searchQuery.emptyCarBill" placeholder="Empty Car Bill"></b-input>
+                            </b-field>
+                        </div>
+                    </div>
+                </div>
+            </b-collapse>
+
+            <button class="button" v-on:click="print">Print ({% verbatim %}{{ checkedRows.length }}{% endverbatim %})</button>
+
+            <b-table
+                    :data="data"
+                    :loading="loading"
+
+                    paginated
+                    pagination-simple
+                    backend-pagination
+
+                    :total="total"
+                    :per-page="perPage"
+                    @page-change="onPageChange"
+
+                    backend-sorting
+                    :default-sort-direction="defaultSortOrder"
+                    :default-sort="[sortField, sortOrder]"
+                    @sort="onSort"
+
+                    :checked-rows.sync="checkedRows"
+                    checkable
+            >
+                <template slot-scope="props">
+                    <b-table-column field="forHome" label="For Home" sortable>
+                        {% verbatim %}
+                            <span v-if="props.row.homeBilledFrom">
+                                For Home<br>
+                                from: {{ props.row.homeBilledFrom.stationName }}, {{ props.row.homeBilledFrom.state }}
+                            </span>
+                        {% endverbatim %}
+                    </b-table-column>
+                    <b-table-column field="forLoading" label="For Loading" sortable>
+                        {% verbatim %}
+                            <span v-if="props.row.loadingShipper">
+                                For Loading (shipper)<br>
+                                from: {{ props.row.loadingBilledFrom.stationName }}, {{ props.row.loadingBilledFrom.state }}<br>
+                                to: {{ props.row.loadingShipper.location.stationName }}, {{ props.row.loadingShipper.location.state }}
+                            </span>
+                            <span v-else-if="props.row.loadingTo">
+                                For Loading<br>
+                                from: {{ props.row.loadingBilledFrom.stationName }}, {{ props.row.loadingBilledFrom.state }}<br>
+                                to:{{ props.row.loadingTo.stationName }}, {{ props.row.loadingTo.state }}
+                            </span>
+                        {% endverbatim %}
+                    </b-table-column>
+                    <b-table-column field="shipper" label="Shipper" sortable>
+                        {% verbatim %}
+                            <span v-if="props.row.loadingShipper">
+                                {{ props.row.loadingShipper.name }}
+                            </span>
+                        {% endverbatim %}
+                    </b-table-column>
+                    <span class="icon is-small">
+                            <a v-bind:href="props.row.viewUrl"><i class="mdi mdi-file-find"></i></a>
+                        {% if is_granted('ROLE_ADMIN') %}<a v-bind:href="props.row.editUrl"><i class="mdi mdi-pencil"></i></a>{% endif %}
+                        </span>
+                    </b-table-column>
+                </template>
+
+                <template slot="empty">
+                    <section class="section">
+                        <div class="content has-text-grey has-text-centered">
+                            <p>No data loaded.</p>
+                        </div>
+                    </section>
+                </template>
+            </b-table>
+        </section>
+    </div>
+
+    {% if is_granted('ROLE_ADMIN') %}<a href="{{ path('empty_car_bill_new') }}"><i class="mdi mdi-plus mdi-48"></i> Add</a>{% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/buefy"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+    <script>
+        Vue.use(Buefy.default)
+    </script>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        const table = {
+            data() {
+                return {
+                    data: [],
+                    checkedRows: [],
+                    total: 0,
+                    loading: false,
+                    sortField: '',
+                    sortOrder: '',
+                    defaultSortOrder: 'asc',
+                    page: 1,
+                    perPage: 100,
+                    searchQuery: {
+                        emptyCarBill: '',
+                    }
+                }
+            },
+            watch: {
+                searchQuery: {
+                    handler () {
+                        this.loadAsyncData();
+                    },
+                    deep: true
+                }
+            },
+            methods: {
+                print: function (event) {
+                    window.location.href = "{{ url('full_waybill_form_print') }}?emptyCarBills=" + this.checkedRows.map(x => x.id).sort();
+                },
+                loadAsyncData: _.debounce(function() {
+                    const params = [
+                        'orderBy=' + this.sortField,
+                        'sortOrder=' + this.sortOrder,
+                        'page=' + this.page,
+                        'limit=' + this.perPage,
+                        'query[emptyCarBill]=' + encodeURIComponent(this.searchQuery.emptyCarBill),
+                    ].join('&');
+
+                    this.loading = true
+                    axios.get('{{ url('empty_card_bill_api_list') }}?' + params)
+                        .then(({data}) => {
+                            this.data = []
+                            let currentTotal = data.count
+                            this.total = currentTotal
+                            data.data.forEach((item) => {
+                                this.data.push(item)
+                            })
+                            this.loading = false;
+                        })
+                        .catch((error) => {
+                            this.data = []
+                            this.total = 0
+                            this.loading = false
+                            throw error
+                        })
+                }, 500),
+                onFilter() {
+                    this.loadAsyncData()
+                },
+                onPageChange(page) {
+                    this.page = page
+                    this.loadAsyncData()
+                },
+                onSort(field, order) {
+                    this.sortField = field
+                    this.sortOrder = order
+                    this.loadAsyncData()
+                }
+            },
+            filters: {
+                truncate(value, length) {
+                    return value.length > length
+                        ? value.substr(0, length) + '...'
+                        : value
+                }
+            },
+            mounted() {
+                this.loadAsyncData()
+            }
+        }
+
+        const app = new Vue(table)
+        app.$mount('#empty-car-bill-list')
+    </script>
+{% endblock %}
