@@ -133,7 +133,7 @@
             },
             methods: {
                 print: function (event) {
-                    window.location.href = "{{ url('full_waybill_form_print') }}?emptyCarBills=" + this.checkedRows.map(x => x.id).sort();
+                    window.location.href = "{{ url('full_empty_car_bill_form_print') }}?emptyCarBills=" + this.checkedRows.map(x => x.id).sort();
                 },
                 loadAsyncData: _.debounce(function() {
                     const params = [

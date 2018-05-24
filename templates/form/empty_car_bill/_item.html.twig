@@ -5,7 +5,7 @@
                     height: {{ field.field.height / page.itemHeight * 100 }}%;
                     width: {{ field.field.width / page.itemWidth * 100 }}%;"
             class="{{ field.field.id }} {{ field.field|class_for_field }}">
-        {% if field.field.id in ['stopThisCarAtData', 'stopThisCarAt2Data'] %}
+        {% if field.field.id in ['loadingSpotData'] %}
             {{ field.data }}
         {% else %}
             {{ field.data|field_label_for_print }}

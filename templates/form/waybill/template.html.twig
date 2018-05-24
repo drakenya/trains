@@ -135,7 +135,7 @@
                                 width: {{ 1 / page.pageColumns * 100 }}%;
                                 position: absolute;
                                 ">
-                            {% include 'form/full_waybill/_item.html.twig' with { page: page, form: forms[formPage * (page.pageRows * page.pageColumns) + (column + row * page.pageColumns)] }%}
+                            {% include 'form/waybill/_item.html.twig' with { page: page, form: forms[formPage * (page.pageRows * page.pageColumns) + (column + row * page.pageColumns)] }%}
                         </div>
                     {% endif %}
                 {% endfor %}

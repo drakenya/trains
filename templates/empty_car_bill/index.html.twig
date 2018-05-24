@@ -89,7 +89,7 @@
         </section>
     </div>
 
-    {% if is_granted('ROLE_ADMIN') %}<a href="{{ path('empty_car_bill_new') }}"><i class="mdi mdi-plus mdi-48"></i> Add</a>{% endif %}
+    {% if is_granted('ROLE_ADMIN') %}<a href="{{ path('short_empty_car_bill_form_print') }}"><i class="mdi mdi-plus mdi-48"></i> Add</a>{% endif %}
 {% endblock %}
 
 {% block stylesheets %}

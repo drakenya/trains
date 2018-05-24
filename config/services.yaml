@@ -136,8 +136,10 @@ services:
                 - { type: horizontal, position: bottom, reference: fromData }
                 - { type: horizontal, position: bottom, reference: instructionsAndExceptions }
                 - { type: horizontal, position: bottom, reference: instructionsAndExceptionsData }
-                - { type: horizontal, position: bottom, reference: marginLeft }
-                - { type: horizontal, position: bottom, reference: marginRight }
+                - { type: horizontal, position: bottom, reference: aar }
+                - { type: horizontal, position: bottom, reference: aarData }
+                - { type: horizontal, position: bottom, reference: len }
+                - { type: horizontal, position: bottom, reference: lenData }
                 - { type: horizontal, position: bottom, reference: routeVia }
                 - { type: horizontal, position: bottom, reference: routeViaData }
                 - { type: horizontal, position: bottom, reference: shipperData }
@@ -239,6 +241,107 @@ services:
                 instructionsAndExceptions: 'Instructions & Exceptions'
                 pkgs: '# Pkgs'
                 description: 'Description of Articles'
+
+    App\Paperwork\Creator\FullEmptyCarBillCreator:
+        arguments:
+            $fieldData:
+                - { id: formHeader, type: formHeader, position: origin, width: 1, height: 1 }
+                - { id: carInitial, type: header, position: bottom, reference: formHeader, width: '@=1/4', height: '@=1/2' }
+                - { id: carInitialData, type: data, position: right, reference: carInitial,  width: '@=1/4', height: '@=1/2' }
+                - { id: carNumber, type: header, position: right, reference: carInitialData, width: '@=1/4', height: '@=1/2' }
+                - { id: carNumberData, type: data, position: right, reference: carNumber, width: '@=1/4', height: '@=1/2'}
+                - { id: aar, type: header, position: bottom, reference: carInitial, width: '@=1/4', height: '@=1/2' }
+                - { id: aarData, type: data, position: right, reference: aar,  width: '@=1/4', height: '@=1/2' }
+                - { id: len, type: header, position: right, reference: aarData, width: '@=1/4', height: '@=1/2' }
+                - { id: lenData, type: data, position: right, reference: len, width: '@=1/4', height: '@=1/2'}
+                - { id: marginLeft, type: data, position: bottom, reference: aar, width: '@=1/2', height: '@=1/6'}
+                - { id: marginRight, type: data, position: right, reference: marginLeft, width: '@=1/2', height: '@=1/6'}
+                - { id: forHome, type: formHeader, position: bottom, reference: marginLeft, width: 1, height: '@=2/3' }
+                - { id: homeBilledFrom, type: header, position: bottom, reference: forHome, width: '@=1/4', height: '@=7/12' }
+                - { id: homeBilledFromData, type: data, position: right, reference: homeBilledFrom, width: '@=3/4', height: '@=7/12' }
+                - { id: homeToOrVia, type: header, position: bottom, reference: homeBilledFrom, width: '@=1/4', height: '@=7/12' }
+                - { id: homeToOrViaData, type: data, position: right, reference: homeToOrVia, width: '@=3/4', height: '@=7/12' }
+                - { id: forLoading, type: formHeader, position: bottom, reference: homeToOrVia, width: 1, height: '@=2/3' }
+                - { id: loadingBilledFrom, type: header, position: bottom, reference: forLoading, width: '@=1/4', height: '@=7/12' }
+                - { id: loadingBilledFromData, type: data, position: right, reference: loadingBilledFrom, width: '@=3/4', height: '@=7/12' }
+                - { id: loadingTo, type: header, position: bottom, reference: loadingBilledFrom, width: '@=1/4', height: '@=7/12' }
+                - { id: loadingToData, type: data, position: right, reference: loadingTo, width: '@=3/4', height: '@=7/12' }
+                - { id: loadingShipper, type: header, position: bottom, reference: loadingTo, width: '@=1/6', height: '@=7/12+7/12' }
+                - { id: loadingShipperData, type: data, position: right, reference: loadingShipper, width: '@=2/4', height: '@=7/12+7/12' }
+                - { id: loadingSpot, type: header, position: right, reference: loadingShipperData, width: '@=1/12', height: '@=7/12+7/12' }
+                - { id: loadingSpotData, type: data, position: right, reference: loadingSpot, width: '@=3/12', height: '@=7/12+7/12' }
+            $lines:
+                - { type: horizontal, position: bottom, reference: carInitial }
+                - { type: horizontal, position: bottom, reference: carInitialData }
+                - { type: horizontal, position: bottom, reference: carNumber }
+                - { type: horizontal, position: bottom, reference: carNumberData }
+                - { type: horizontal, position: bottom, reference: formHeader }
+                - { type: horizontal, position: bottom, reference: aar }
+                - { type: horizontal, position: bottom, reference: aarData }
+                - { type: horizontal, position: bottom, reference: len }
+                - { type: horizontal, position: bottom, reference: lenData }
+                - { type: horizontal, position: bottom, reference: homeBilledFrom }
+                - { type: horizontal, position: bottom, reference: homeBilledFromData }
+                - { type: horizontal, position: bottom, reference: homeToOrVia }
+                - { type: horizontal, position: bottom, reference: homeToOrViaData }
+                - { type: horizontal, position: bottom, reference: loadingBilledFrom }
+                - { type: horizontal, position: bottom, reference: loadingBilledFromData }
+                - { type: horizontal, position: bottom, reference: loadingTo }
+                - { type: horizontal, position: bottom, reference: loadingToData }
+                - { type: vertical, position: right, reference: aarData }
+                - { type: vertical, position: right, reference: carInitialData }
+            $headerLabels:
+                formHeader: 'Empty Car Bill'
+                carInitial: 'Car Initial'
+                carNumber: 'Car Number'
+                aar: 'AAR Class of Car Ordered'
+                len: 'Length/Capy of Car Ordered'
+                forHome: 'For Home'
+                forLoading: 'For Loading'
+                homeBilledFrom: 'Billed from'
+                homeToOrVia: 'To or Via'
+                loadingBilledFrom: 'Billed from'
+                loadingTo: 'To'
+                loadingShipper: 'Shipper'
+                loadingSpot: 'Spot'
+
+    App\Paperwork\Creator\ShortEmptyCarBillCreator:
+        arguments:
+            $fieldData:
+                - { id: marginLeft, type: data, position: origin, width: '@=1/2', height: '@=1/6'}
+                - { id: marginRight, type: data, position: right, reference: marginLeft, width: '@=1/2', height: '@=1/6'}
+                - { id: forHome, type: formHeader, position: bottom, reference: marginLeft, width: 1, height: '@=2/3' }
+                - { id: homeBilledFrom, type: header, position: bottom, reference: forHome, width: '@=1/4', height: '@=7/12' }
+                - { id: homeBilledFromData, type: data, position: right, reference: homeBilledFrom, width: '@=3/4', height: '@=7/12' }
+                - { id: homeToOrVia, type: header, position: bottom, reference: homeBilledFrom, width: '@=1/4', height: '@=7/12' }
+                - { id: homeToOrViaData, type: data, position: right, reference: homeToOrVia, width: '@=3/4', height: '@=7/12' }
+                - { id: forLoading, type: formHeader, position: bottom, reference: homeToOrVia, width: 1, height: '@=2/3' }
+                - { id: loadingBilledFrom, type: header, position: bottom, reference: forLoading, width: '@=1/4', height: '@=7/12' }
+                - { id: loadingBilledFromData, type: data, position: right, reference: loadingBilledFrom, width: '@=3/4', height: '@=7/12' }
+                - { id: loadingTo, type: header, position: bottom, reference: loadingBilledFrom, width: '@=1/4', height: '@=7/12' }
+                - { id: loadingToData, type: data, position: right, reference: loadingTo, width: '@=3/4', height: '@=7/12' }
+                - { id: loadingShipper, type: header, position: bottom, reference: loadingTo, width: '@=1/6', height: '@=7/12+7/12' }
+                - { id: loadingShipperData, type: data, position: right, reference: loadingShipper, width: '@=2/4', height: '@=7/12+7/12' }
+                - { id: loadingSpot, type: header, position: right, reference: loadingShipperData, width: '@=1/12', height: '@=7/12+7/12' }
+                - { id: loadingSpotData, type: data, position: right, reference: loadingSpot, width: '@=3/12', height: '@=7/12+7/12' }
+            $lines:
+                - { type: horizontal, position: bottom, reference: homeBilledFrom }
+                - { type: horizontal, position: bottom, reference: homeBilledFromData }
+                - { type: horizontal, position: bottom, reference: homeToOrVia }
+                - { type: horizontal, position: bottom, reference: homeToOrViaData }
+                - { type: horizontal, position: bottom, reference: loadingBilledFrom }
+                - { type: horizontal, position: bottom, reference: loadingBilledFromData }
+                - { type: horizontal, position: bottom, reference: loadingTo }
+                - { type: horizontal, position: bottom, reference: loadingToData }
+            $headerLabels:
+                forHome: 'For Home'
+                forLoading: 'For Loading'
+                homeBilledFrom: 'Billed from'
+                homeToOrVia: 'To or Via'
+                loadingBilledFrom: 'Billed from'
+                loadingTo: 'To'
+                loadingShipper: 'Shipper'
+                loadingSpot: 'Spot'
 
     Faker\Generator:
         factory: ['Faker\Factory', create]
