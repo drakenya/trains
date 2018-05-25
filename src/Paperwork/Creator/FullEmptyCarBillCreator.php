@@ -20,7 +20,7 @@ use App\Paperwork\Form\EmptyCarBillForm;
 use App\Paperwork\Form\WaybillForm;
 use App\Paperwork\Line\HorizontalLine;
 use App\Paperwork\Line\VerticalLine;
-use App\Paperwork\Page\FullWaybillPage;
+use App\Paperwork\Page\FullPage;
 use JMS\Serializer\SerializerInterface;
 
 class FullEmptyCarBillCreator
@@ -63,21 +63,21 @@ class FullEmptyCarBillCreator
                     $fieldData->getId(),
                     0,
                     0,
-                    (new FullWaybillPage())->getItemWidth() * $fieldData->getWidth(),
+                    (new FullPage())->getItemWidth() * $fieldData->getWidth(),
                     WaybillForm::BASE_FIELD_HEIGHT * $fieldData->getHeight()
                 );
             case 'right':
                 return $class::createAtFieldsRight(
                     $fields[$fieldData->getReference()],
                     $fieldData->getId(),
-                    (new FullWaybillPage())->getItemWidth() * $fieldData->getWidth(),
+                    (new FullPage())->getItemWidth() * $fieldData->getWidth(),
                     WaybillForm::BASE_FIELD_HEIGHT * $fieldData->getHeight()
                 );
             case 'bottom':
                 return $class::createAtFieldsBottom(
                     $fields[$fieldData->getReference()],
                     $fieldData->getId(),
-                    (new FullWaybillPage())->getItemWidth() * $fieldData->getWidth(),
+                    (new FullPage())->getItemWidth() * $fieldData->getWidth(),
                     WaybillForm::BASE_FIELD_HEIGHT * $fieldData->getHeight()
                 );
         }

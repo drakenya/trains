@@ -6,8 +6,8 @@ use App\Entity\FullWaybill;
 use App\Entity\Waybill;
 use App\Paperwork\Creator\FullWaybillFormCreator;
 use App\Paperwork\Creator\ShortWaybillFormCreator;
-use App\Paperwork\Page\ShortWaybillPage;
-use App\Paperwork\Page\FullWaybillPage;
+use App\Paperwork\Page\FullPage;
+use App\Paperwork\Page\ShortPage;
 use App\Repository\FullWaybillRepository;
 use App\Repository\WaybillRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,7 +58,7 @@ class WaybillFormController extends Controller
         }, $waybills);
 
         return $this->render('form/waybill/template.html.twig', [
-            'page' => new FullWaybillPage(),
+            'page' => new FullPage(),
             'forms' => $waybillForms,
             'isWebRequest' => (bool) !$request->get('preview'),
         ]);
@@ -84,7 +84,7 @@ class WaybillFormController extends Controller
         }, $waybills);
 
         return $this->render('form/waybill/template.html.twig', [
-            'page' => new ShortWaybillPage(),
+            'page' => new ShortPage(),
             'forms' => $waybillForms,
             'isWebRequest' => (bool) !$request->get('preview'),
         ]);

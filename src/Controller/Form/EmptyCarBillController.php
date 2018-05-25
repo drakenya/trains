@@ -6,8 +6,8 @@ use App\Entity\EmptyCarBill;
 use App\Entity\FullEmptyCarBill;
 use App\Paperwork\Creator\FullEmptyCarBillCreator;
 use App\Paperwork\Creator\ShortEmptyCarBillCreator;
-use App\Paperwork\Page\FullEmptyCarBillPage;
-use App\Paperwork\Page\ShortEmptyCarBillPage;
+use App\Paperwork\Page\FullPage;
+use App\Paperwork\Page\ShortPage;
 use App\Repository\EmptyCarBillRepository;
 use App\Repository\FullEmptyCarBillRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,8 +57,8 @@ class EmptyCarBillController extends Controller
             return $this->fullCreator->create($emptyCarBill);
         }, $emptyCarBills);
 
-        return $this->render('form/empty_car_bill/template.html.twig', [
-            'page' => new FullEmptyCarBillPage(),
+        return $this->render('form/waybill/template.html.twig', [
+            'page' => new FullPage(),
             'forms' => $emptyCarBillForms,
             'isWebRequest' => (bool) !$request->get('preview'),
         ]);
@@ -83,8 +83,8 @@ class EmptyCarBillController extends Controller
             return $this->shortCreator->create($emptyCarBill);
         }, $emptyCarBills);
 
-        return $this->render('form/empty_car_bill/template.html.twig', [
-            'page' => new ShortEmptyCarBillPage(),
+        return $this->render('form/waybill/template.html.twig', [
+            'page' => new ShortPage(),
             'forms' => $emptyCarBillForms,
             'isWebRequest' => (bool) !$request->get('preview'),
         ]);

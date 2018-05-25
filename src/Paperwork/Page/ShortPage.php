@@ -9,18 +9,18 @@
 namespace App\Paperwork\Page;
 
 
-class FullEmptyCarBillPage
+class ShortPage
 {
     private const PAGE_WIDTH = 8.5;
     private const PAGE_HEIGHT = 11;
 
     private const WIDTH = 2.5;
-    private const HEIGHT = 3.5;
+    private const HEIGHT = 2.5;
 
-    private const PAGE_ROWS = 3;
+    private const PAGE_ROWS = 4;
     private const PAGE_COLUMNS = 3;
 
-    private const PAGE_MARGIN_TOP = 0.25;
+    private const PAGE_MARGIN_TOP = 0.5;
     private const PAGE_MARGIN_SIDE = 0.5;
 
     public function getPageWidth(): float
