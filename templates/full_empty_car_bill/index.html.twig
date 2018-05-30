@@ -64,12 +64,12 @@
                             </span>
                             <span v-else-if="props.row.emptyCarBill.loadingShipper">
                                 For Loading (shipper)<br>
-                                from: {{ props.row.emptyCarBill.loadingBilledFrom.stationName }}, {{ props.row.emptyCarBill.loadingBilledFrom.state }}<br>
+                                from: <span v-if="props.row.emptyCarBill.loadingBilledFrom">{{ props.row.emptyCarBill.loadingBilledFrom.stationName }}, {{ props.row.emptyCarBill.loadingBilledFrom.state }}</span><br>
                                 shipper: {{ props.row.emptyCarBill.loadingShipper.name }} / {{ props.row.emptyCarBill.loadingShipper.location.stationName }}, {{ props.row.emptyCarBill.loadingShipper.location.state }}
                             </span>
                             <span v-else>
                                 For Loading<br>
-                                from: {{ props.row.emptyCarBill.loadingBilledFrom.stationName }}, {{ props.row.emptyCarBill.loadingBilledFrom.state }}<br>
+                                from: <span v-if="props.row.emptyCarBill.loadingBilledFrom">{{ props.row.emptyCarBill.loadingBilledFrom.stationName }}, {{ props.row.emptyCarBill.loadingBilledFrom.state }}</span><br>
                                 to:{{ props.row.emptyCarBill.loadingTo.stationName }}, {{ props.row.emptyCarBill.loadingTo.state }}
                             </span>
                         {% endverbatim %}
