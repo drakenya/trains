@@ -46,10 +46,19 @@ class CarCardController extends Controller
             strtolower($request->get('sortOrder')) === 'asc',
             $request->get('query') ?: null
         );
-        array_walk($data, function (&$item) {
-            $item['viewUrl'] = $this->generateUrl('car_card_show', ['id' => $item['id']]);
-            $item['editUrl'] = $this->generateUrl('car_card_edit', ['id' => $item['id']]);
-        });
+        $data = array_map(function ($item) {
+            return array_merge(
+                $item[0],
+                array_filter($item, function ($key) {
+                    return !is_numeric($key);
+                    }, ARRAY_FILTER_USE_KEY
+                ),
+                [
+                    'viewUrl' => $this->generateUrl('car_card_show', ['id' => $item[0]['id']]),
+                    'editUrl' => $this->generateUrl('car_card_edit', ['id' => $item[0]['id']]),
+                ]
+            );
+        }, $data);
 
         $responseData = [
             'data' => $data,

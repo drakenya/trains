@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -65,6 +66,26 @@ class CarCard
      * @ORM\JoinColumn(nullable=false)
      */
     private $railroad;
+
+    /**
+     * @var FullWaybill[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\FullWaybill", mappedBy="carCard")
+     */
+    private $fullWaybills;
+
+    /**
+     * @var FullEmptyCarBill[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\FullEmptyCarBill", mappedBy="carCard")
+     */
+    private $fullEmptyCarBills;
+
+    public function __construct()
+    {
+        $this->fullWaybills = new ArrayCollection();
+        $this->fullEmptyCarBills = new ArrayCollection();
+    }
 
     public function getId()
     {

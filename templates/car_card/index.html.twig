@@ -47,8 +47,14 @@
                     <b-table-column field="carNumber" label="Car #" sortable>
                         {% verbatim %}{{ props.row.carNumber }}{% endverbatim %}
                     </b-table-column>
+                    <b-table-column label="Waybills">
+                        {% verbatim %}<span v-if="props.row.fullWaybills_count > 0">{{ props.row.fullWaybills_count }}</span>{% endverbatim %}
+                    </b-table-column>
+                    <b-table-column label="Empty Car Bills">
+                        {% verbatim %}<span v-if="props.row.fullEmptyCarBills_count > 0">{{ props.row.fullEmptyCarBills_count }}</span>{% endverbatim %}
+                    </b-table-column>
                     <span class="icon is-small">
-                            <a v-bind:href="props.row.viewUrl"><i class="mdi mdi-file-find"></i></a>
+                        <a v-bind:href="props.row.viewUrl"><i class="mdi mdi-file-find"></i></a>
                         {% if is_granted('ROLE_ADMIN') %}<a v-bind:href="props.row.editUrl"><i class="mdi mdi-pencil"></i></a>{% endif %}
                         </span>
                     </b-table-column>
