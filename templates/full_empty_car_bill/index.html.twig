@@ -8,6 +8,8 @@
 
     <div id="full-empty-car-bill-list">
         <section>
+            {% if is_granted('ROLE_ADMIN') %}<a href="{{ path('full_empty_car_bill_new') }}"><i class="mdi mdi-plus mdi-48"></i> Add</a>{% endif %}
+
             <b-collapse :open="false">
                 <button class="button is-primary" slot="trigger">Filters</button>
                 <div class="notification">
@@ -89,8 +91,6 @@
             </b-table>
         </section>
     </div>
-
-    {% if is_granted('ROLE_ADMIN') %}<a href="{{ path('full_empty_car_bill_new') }}"><i class="mdi mdi-plus mdi-48"></i> Add</a>{% endif %}
 {% endblock %}
 
 {% block stylesheets %}
