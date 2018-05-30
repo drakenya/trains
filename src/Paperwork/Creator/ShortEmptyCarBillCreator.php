@@ -211,6 +211,6 @@ class ShortEmptyCarBillCreator
             }
         }
 
-        return new WaybillForm(array_values($fields), $lines);
+        return new EmptyCarBillForm(array_values($fields), $lines);
     }
 }
