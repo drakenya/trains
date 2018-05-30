@@ -75,6 +75,16 @@ class EmptyCarBillController extends Controller
     {
         if ($request->get('emptyCarBills')) {
             $emptyCarBills = $this->emptyCarBillRepository->findBy(['id' => explode(',', $request->get('emptyCarBills'))]);
+
+            foreach (array_count_values(explode(',', $request->get('emptyCarBills'))) as $value => $count) {
+                if ($count === 1) {
+                    continue;
+                }
+                $extra = $this->emptyCarBillRepository->findOneBy(['id' => $value]);
+                foreach (range(1, $count - 1) as $index) {
+                    $emptyCarBills[] = $extra;
+                }
+            }
         } else {
             $emptyCarBills = $this->emptyCarBillRepository->findAll();
         }
