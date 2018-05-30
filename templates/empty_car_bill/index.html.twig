@@ -54,12 +54,12 @@
                         {% verbatim %}
                             <span v-if="props.row.loadingShipper">
                                 For Loading (shipper)<br>
-                                from: {{ props.row.loadingBilledFrom.stationName }}, {{ props.row.loadingBilledFrom.state }}<br>
+                                from: <span v-if="props.row.loadingBilledFrom">{{ props.row.loadingBilledFrom.stationName }}, {{ props.row.loadingBilledFrom.state }}</span><br>
                                 to: {{ props.row.loadingShipper.location.stationName }}, {{ props.row.loadingShipper.location.state }}
                             </span>
                             <span v-else-if="props.row.loadingTo">
                                 For Loading<br>
-                                from: {{ props.row.loadingBilledFrom.stationName }}, {{ props.row.loadingBilledFrom.state }}<br>
+                                from: <span v-if="props.row.loadingBilledFrom">{{ props.row.loadingBilledFrom.stationName }}, {{ props.row.loadingBilledFrom.state }}</span><br>
                                 to:{{ props.row.loadingTo.stationName }}, {{ props.row.loadingTo.state }}
                             </span>
                         {% endverbatim %}
