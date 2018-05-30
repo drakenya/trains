@@ -20,7 +20,12 @@ class LocationController extends Controller
      */
     public function index(LocationRepository $locationRepository): Response
     {
-        return $this->render('location/index.html.twig', ['locations' => $locationRepository->findBy([], ['state' => 'ASC', 'stationName' => 'ASC'])]);
+        return $this->render('location/index.html.twig', ['locations' => $locationRepository->findBy([], [
+            'onLayout' => 'DESC',
+            'stationNumber' => 'ASC',
+            'state' => 'ASC',
+            'stationName' => 'ASC'
+        ])]);
     }
 
     /**

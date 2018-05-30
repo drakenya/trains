@@ -35,7 +35,7 @@ class WaybillFixtures extends Fixture implements DependentFixtureInterface
             $waybill = (new Waybill())
                 ->setAarCode($this->getReference(sprintf('%s-%s', AarCodeFixtures::REFERENCE, rand(1, AarCodeFixtures::FIXTURES_TO_GENERATE))))
                 ->setRouteVia($this->faker->regexify('([A-Z]{2,3}-){5,8}[A-Z]{2,3}'))
-                ->setStopAt(sprintf('%s.%s', $this->faker->randomNumber(3), $this->faker->randomNumber(3)))
+                ->setStopAt(sprintf('%s.%s', $this->faker->randomNumber(1), $this->faker->randomNumber(3)))
                 ->setLadingQuantity($this->faker->randomElement(['C/L']))
                 ->setLadingDescription($this->faker->words(2, true))
                 ->setInstructionsExceptions($this->faker->optional(0.25)->words(3, true))

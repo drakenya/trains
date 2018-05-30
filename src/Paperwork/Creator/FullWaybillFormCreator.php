@@ -115,7 +115,9 @@ class FullWaybillFormCreator
             case 'routeViaData': return $waybill->getWaybill()->getRouteVia();
             case 'shipperData': return $waybill->getWaybill()->getShipper() ? $waybill->getWaybill()->getShipper()->getName() : null;
             case 'stopThisCarAt2Data': return $waybill->getWaybill()->getStopAt2();
-            case 'stopThisCarAtData': return $waybill->getWaybill()->getStopAt();
+            case 'stopThisCarAtData': return ($waybill->getWaybill()->getConsignee() && $waybill->getWaybill()->getStopAt())
+                ? sprintf('%s%s', $waybill->getWaybill()->getConsignee()->getLocation()->getStationNumber(), $waybill->getWaybill()->getStopAt())
+                : null;
             case 'toData': return $waybill->getWaybill()->getConsignee() ? sprintf(
                 '%s, %s',
                 $waybill->getWaybill()->getConsignee()->getLocation()->getStationName(),

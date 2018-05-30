@@ -49,7 +49,7 @@ class EmptyCarBillFixtures extends Fixture implements DependentFixtureInterface
                     $emptyCarBill
                         ->setLoadingBilledFrom($this->getReference(sprintf('%s-%s', LocationFixtures::REFERENCE, $location1)))
                         ->setLoadingShipper($this->getReference(sprintf('%s-%s', CustomerFixtures::REFERENCE, rand(1, CustomerFixtures::FIXTURES_TO_GENERATE))))
-                        ->setLoadingSpot(sprintf('%s.%s', $this->faker->randomNumber(3), $this->faker->randomNumber(3)))
+                        ->setLoadingSpot(sprintf('%s.%s', $this->faker->randomNumber(1), $this->faker->randomNumber(3)))
                     ;
                 }
             }

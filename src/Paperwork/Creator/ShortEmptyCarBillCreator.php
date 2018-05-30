@@ -143,8 +143,8 @@ class ShortEmptyCarBillCreator
                 }
                 return null;
             case 'loadingSpotData':
-                if ($emptyCarBill->getLoadingSpot()) {
-                    return $emptyCarBill->getLoadingSpot();
+                if ($emptyCarBill->getLoadingSpot() && $emptyCarBill->getLoadingShipper()) {
+                    return sprintf('%s%s', $emptyCarBill->getLoadingShipper()->getLocation()->getStationNumber(), $emptyCarBill->getLoadingSpot());
                 }
                 return null;
         }

@@ -27,6 +27,9 @@ class LocationFixtures extends Fixture
                 ->setState($this->faker->stateAbbr)
                 ->setOnLayout($this->faker->boolean(50))
             ;
+            if ($location->getOnLayout()) {
+                $location->setStationNumber($this->faker->numberBetween(10, 99));
+            }
             $manager->persist($location);
 
             $this->addReference(sprintf('%s-%s', static::REFERENCE, ($i + 1)), $location);
