@@ -74,14 +74,14 @@ class Waybill
     /**
      * @var Customer
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="shippers")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Customer")
      */
     private $shipper;
 
     /**
      * @var Customer
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="shippers")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Customer")
      */
     private $consignee;
 
