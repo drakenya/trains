@@ -55,6 +55,11 @@ class Location
     private $onLayout;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $onDivision;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
@@ -221,6 +226,18 @@ class Location
     public function setOnLayout(bool $onLayout): self
     {
         $this->onLayout = $onLayout;
+
+        return $this;
+    }
+
+    public function getOnDivision(): ?bool
+    {
+        return $this->onDivision;
+    }
+
+    public function setOnnDivision(bool $onDivision): self
+    {
+        $this->onDivision = $onDivision;
 
         return $this;
     }

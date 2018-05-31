@@ -13,6 +13,7 @@
                 <th>StationName</th>
                 <th>State</th>
                 <th>OnLayout</th>
+                <th>OnDivision</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -23,7 +24,8 @@
                 <td>{{ location.stationNumber }}</td>
                 <td>{{ location.stationName }}</td>
                 <td>{{ location.state }}</td>
-                <td>{{ location.onLayout ? 'Yes' : 'No' }}</td>
+                <td>{{ location.onLayout ? 'Yes' : '' }}</td>
+                <td>{{ location.onDivision ? 'Yes' : '' }}</td>
                 <td>
                     <a href="{{ path('location_show', {'id': location.id}) }}">show</a>
                     <a href="{{ path('location_edit', {'id': location.id}) }}">edit</a>

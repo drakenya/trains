@@ -42,7 +42,14 @@ class WaybillType extends AbstractType
                         ;
                 },
                 'group_by' => function (Customer $customer) {
-                    return $customer->getLocation()->getState();
+                    $group = $customer->getLocation()->getState();
+                    if ($customer->getLocation()->getOnLayout()) {
+                        $group .= ' (layout)';
+                    }
+                    if ($customer->getLocation()->getOnDivision()) {
+                        $group .= ' (division)';
+                    }
+                    return $group;
                 },
             ])
             ->add('consignee', null, [
@@ -58,7 +65,14 @@ class WaybillType extends AbstractType
                         ;
                 },
                 'group_by' => function (Customer $customer) {
-                    return $customer->getLocation()->getState();
+                    $group = $customer->getLocation()->getState();
+                    if ($customer->getLocation()->getOnLayout()) {
+                        $group .= ' (layout)';
+                    }
+                    if ($customer->getLocation()->getOnDivision()) {
+                        $group .= ' (division)';
+                    }
+                    return $group;
                 },
             ])
             ->add('stopAt')

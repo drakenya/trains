@@ -27,7 +27,14 @@ class EmptyCarBillType extends AbstractType
                         ;
                 },
                 'group_by' => function (Location $location) {
-                    return $location->getState();
+                    $group = $location->getState();
+                    if ($location->getOnLayout()) {
+                        $group .= ' (layout)';
+                    }
+                    if ($location->getOnDivision()) {
+                        $group .= ' (division)';
+                    }
+                    return $group;
                 },
             ])
             ->add('homeToOrVia')
@@ -43,7 +50,14 @@ class EmptyCarBillType extends AbstractType
                         ;
                 },
                 'group_by' => function (Location $location) {
-                    return $location->getState();
+                    $group = $location->getState();
+                    if ($location->getOnLayout()) {
+                        $group .= ' (layout)';
+                    }
+                    if ($location->getOnDivision()) {
+                        $group .= ' (division)';
+                    }
+                    return $group;
                 },
             ])
             ->add('loadingTo', null, [
@@ -58,7 +72,14 @@ class EmptyCarBillType extends AbstractType
                         ;
                 },
                 'group_by' => function (Location $location) {
-                    return $location->getState();
+                    $group = $location->getState();
+                    if ($location->getOnLayout()) {
+                        $group .= ' (layout)';
+                    }
+                    if ($location->getOnDivision()) {
+                        $group .= ' (division)';
+                    }
+                    return $group;
                 },
             ])
             ->add('loadingShipper', null, [
@@ -74,7 +95,14 @@ class EmptyCarBillType extends AbstractType
                         ;
                 },
                 'group_by' => function (Customer $customer) {
-                    return $customer->getLocation()->getState();
+                    $group = $customer->getLocation()->getState();
+                    if ($customer->getLocation()->getOnLayout()) {
+                        $group .= ' (layout)';
+                    }
+                    if ($customer->getLocation()->getOnDivision()) {
+                        $group .= ' (division)';
+                    }
+                    return $group;
                 },
             ])
             ->add('loadingSpot')
