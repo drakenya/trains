@@ -113,7 +113,7 @@
                     page: 1,
                     perPage: 100,
                     searchQuery: {
-                        carCard: '',
+                        carCard: (new URLSearchParams(window.location.search)).get('carCardSearch'),
                         waybill: '',
                     }
                 }

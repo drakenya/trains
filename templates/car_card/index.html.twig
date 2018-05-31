@@ -5,6 +5,8 @@
 {% block body %}
     <h1>CarCard index</h1>
 
+    {% if is_granted('ROLE_ADMIN') %}<a href="{{ path('car_card_new') }}"><i class="mdi mdi-plus mdi-48"></i> Add</a>{% endif %}
+
     <div id="car-card-list">
         <section>
             <b-collapse :open="false">
@@ -53,10 +55,12 @@
                         {% endverbatim %}
                     </b-table-column>
                     <b-table-column label="Waybills">
-                        {% verbatim %}<span v-if="props.row.fullWaybills_count > 0">{{ props.row.fullWaybills_count }}</span>{% endverbatim %}
+                        {% if is_granted('ROLE_ADMIN') %}<a v-bind:href="props.row.newWaybillUrl"><i class="mdi mdi-plus"></i></a>{% endif %}
+                        {% verbatim %}<span v-if="props.row.fullWaybills_count > 0"><a v-bind:href="props.row.waybillSearchUrl">{{ props.row.fullWaybills_count }}</a></span>{% endverbatim %}
                     </b-table-column>
                     <b-table-column label="Empty Car Bills">
-                        {% verbatim %}<span v-if="props.row.fullEmptyCarBills_count > 0">{{ props.row.fullEmptyCarBills_count }}</span>{% endverbatim %}
+                        {% if is_granted('ROLE_ADMIN') %}<a v-bind:href="props.row.newEmptyCarBillUrl"><i class="mdi mdi-plus"></i></a>{% endif %}
+                        {% verbatim %}<span v-if="props.row.fullEmptyCarBills_count > 0"><a v-bind:href="props.row.emptyCarBillSearchUrl">{{ props.row.fullEmptyCarBills_count }}</a></span>{% endverbatim %}
                     </b-table-column>
                     <span class="icon is-small">
                         <a v-bind:href="props.row.viewUrl"><i class="mdi mdi-file-find"></i></a>
@@ -75,8 +79,6 @@
             </b-table>
         </section>
     </div>
-
-    {% if is_granted('ROLE_ADMIN') %}<a href="{{ path('car_card_new') }}"><i class="mdi mdi-plus mdi-48"></i> Add</a>{% endif %}
 {% endblock %}
 
 {% block stylesheets %}

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\FullWaybill;
 use App\Form\FullWaybillType;
+use App\Repository\CarCardRepository;
 use App\Repository\FullWaybillRepository;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,11 +18,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class FullWaybillController extends Controller
 {
+    private $carCardRepository;
     private $fullWaybillRepository;
     private $serializer;
 
-    public function __construct(FullWaybillRepository $fullWaybillRepository, SerializerInterface $serializer)
+    public function __construct(CarCardRepository $carCardRepository, FullWaybillRepository $fullWaybillRepository, SerializerInterface $serializer)
     {
+        $this->carCardRepository = $carCardRepository;
         $this->fullWaybillRepository = $fullWaybillRepository;
         $this->serializer = $serializer;
     }
@@ -74,6 +77,10 @@ class FullWaybillController extends Controller
             $em->flush();
 
             return $this->redirectToRoute('full_waybill_index');
+        }
+
+        if ($request->get('carCardId')) {
+            $form->get('carCard')->setData($this->carCardRepository->find($request->get('carCardId')));
         }
 
         return $this->render('full_waybill/new.html.twig', [

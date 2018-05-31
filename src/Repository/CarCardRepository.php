@@ -31,7 +31,7 @@ class CarCardRepository extends ServiceEntityRepository
     public function getSelection(int $page = 1, int $limit = 10, ?string $sortBy = null, bool $ascending = true, ?array $query = null): array
     {
         $builder = $this->createQueryBuilder('cc')
-            ->select('cc', 'r', 'ac', 'count(fullWaybills) as fullWaybills_count', 'count(fullEmptyCarBills) as fullEmptyCarBills_count')
+            ->select('cc', 'r', 'ac', 'count(distinct(fullWaybills)) as fullWaybills_count', 'count(distinct(fullEmptyCarBills)) as fullEmptyCarBills_count')
             ->innerJoin('cc.railroad', 'r')
             ->innerJoin('cc.aarCode', 'ac')
             ->leftJoin('cc.fullWaybills', 'fullWaybills')

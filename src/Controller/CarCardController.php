@@ -56,6 +56,10 @@ class CarCardController extends Controller
                 [
                     'viewUrl' => $this->generateUrl('car_card_show', ['id' => $item[0]['id']]),
                     'editUrl' => $this->generateUrl('car_card_edit', ['id' => $item[0]['id']]),
+                    'newWaybillUrl' => $this->generateUrl('full_waybill_new', ['carCardId' => $item[0]['id']]),
+                    'newEmptyCarBillUrl' => $this->generateUrl('full_empty_car_bill_new', ['carCardId' => $item[0]['id']]),
+                    'waybillSearchUrl' => $this->generateUrl('full_waybill_index', ['carCardSearch' => $item[0]['carNumber']]),
+                    'emptyCarBillSearchUrl' => $this->generateUrl('full_empty_car_bill_index', ['carCardSearch' => $item[0]['carNumber']]),
                 ]
             );
         }, $data);

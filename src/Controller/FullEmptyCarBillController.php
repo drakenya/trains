@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\FullEmptyCarBill;
 use App\Form\FullEmptyCarBillType;
+use App\Repository\CarCardRepository;
 use App\Repository\FullEmptyCarBillRepository;
 use JMS\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,11 +18,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class FullEmptyCarBillController extends Controller
 {
+    private $carCardRepository;
     private $fullEmptyCarBillRepository;
     private $serializer;
 
-    public function __construct(FullEmptyCarBillRepository $fullEmptyCarBillRepository, SerializerInterface $serializer)
+    public function __construct(CarCardRepository $carCardRepository, FullEmptyCarBillRepository $fullEmptyCarBillRepository, SerializerInterface $serializer)
     {
+        $this->carCardRepository = $carCardRepository;
         $this->fullEmptyCarBillRepository = $fullEmptyCarBillRepository;
         $this->serializer = $serializer;
     }
@@ -74,6 +77,10 @@ class FullEmptyCarBillController extends Controller
             $em->flush();
 
             return $this->redirectToRoute('full_empty_car_bill_index');
+        }
+
+        if ($request->get('carCardId')) {
+            $form->get('carCard')->setData($this->carCardRepository->find($request->get('carCardId')));
         }
 
         return $this->render('full_empty_car_bill/new.html.twig', [
