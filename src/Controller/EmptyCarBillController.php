@@ -47,8 +47,8 @@ class EmptyCarBillController extends Controller
             $request->get('query') ?: null
         );
         array_walk($data, function (&$item) {
-            $item['viewUrl'] = $this->generateUrl('full_empty_car_bill_show', ['id' => $item['id']]);
-            $item['editUrl'] = $this->generateUrl('full_empty_car_bill_edit', ['id' => $item['id']]);
+            $item['viewUrl'] = $this->generateUrl('empty_car_bill_show', ['id' => $item['id']]);
+            $item['editUrl'] = $this->generateUrl('empty_car_bill_edit', ['id' => $item['id']]);
         });
 
         $responseData = [
