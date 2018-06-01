@@ -50,6 +50,7 @@
                             <span v-if="props.row.homeBilledFrom">
                                 For Home<br>
                                 from: {{ props.row.homeBilledFrom.stationName }}, {{ props.row.homeBilledFrom.state }}
+                                <span v-if="props.row.homeToOrVia"><br>to/via: {{ props.row.homeToOrVia }}</span>
                             </span>
                         {% endverbatim %}
                     </b-table-column>
