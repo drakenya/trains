@@ -16,6 +16,7 @@ class LocationType extends AbstractType
             ->add('stationName')
             ->add('state')
             ->add('onLayout')
+            ->add('onDivision')
         ;
     }
 

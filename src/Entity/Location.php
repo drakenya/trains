@@ -161,7 +161,7 @@ class Location
         return $this->onDivision;
     }
 
-    public function setOnnDivision(bool $onDivision): self
+    public function setOnDivision(bool $onDivision): self
     {
         $this->onDivision = $onDivision;
 
