@@ -111,9 +111,11 @@ class ShortWaybillFormCreator
             case 'routeViaData': return $waybill->getRouteVia();
             case 'shipperData': return $waybill->getShipper() ? $waybill->getShipper()->getName() : null;
             case 'stopThisCarAt2Data': return $waybill->getStopAt2();
-            case 'stopThisCarAtData': return ($waybill->getConsignee() && $waybill->getStopAt())
-                ? sprintf('%s%s', $waybill->getConsignee()->getLocation()->getStationNumber(), $waybill->getStopAt())
-                : null;
+            case 'stopThisCarAtData':
+                $spot = $waybill->getConsignee() ? $waybill->getConsignee()->getLocation()->getStationNumber() : '';
+                $spot .= $waybill->getStopAt() ?: '';
+
+                return $spot ?: null;
             case 'toData': return $waybill->getConsignee() ? sprintf(
                 '%s, %s',
                 $waybill->getConsignee()->getLocation()->getStationName(),

@@ -143,10 +143,10 @@ class ShortEmptyCarBillCreator
                 }
                 return null;
             case 'loadingSpotData':
-                if ($emptyCarBill->getLoadingSpot() && $emptyCarBill->getLoadingShipper()) {
-                    return sprintf('%s%s', $emptyCarBill->getLoadingShipper()->getLocation()->getStationNumber(), $emptyCarBill->getLoadingSpot());
-                }
-                return null;
+                $spot = $emptyCarBill->getLoadingShipper() ? $emptyCarBill->getLoadingShipper()->getLocation()->getStationNumber() : '';
+                $spot .= $emptyCarBill->getLoadingSpot() ?: '';
+
+                return $spot ?: null;
         }
 
         throw new UnknownDataKeyException($key);
