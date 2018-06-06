@@ -26,6 +26,7 @@ class LocationFixtures extends Fixture
                 ->setStationName($this->faker->city)
                 ->setState($this->faker->stateAbbr)
                 ->setOnLayout($this->faker->boolean(50))
+                ->setOnDivision($this->faker->boolean(25))
             ;
             if ($location->getOnLayout()) {
                 $location->setStationNumber($this->faker->numberBetween(10, 99));
